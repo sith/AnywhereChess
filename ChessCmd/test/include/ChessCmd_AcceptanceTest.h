@@ -18,16 +18,26 @@ private:
     std::streambuf *old;
 };
 
-BOOST_AUTO_TEST_CASE(show_chess_board_on_startup, *utf::timeout(5)) {
+BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_with_user_names, *utf::timeout(5)) {
     boost::test_tools::output_test_stream output;
     {
         cout_redirect guard(output.rdbuf());
 
-        ChessCmd chessCmd(std::cin, std::cout);
+        char *args[] = {
+                (char *) "app_path",
+                (char *) "--player1",
+                (char *) "foo",
+                (char *) "--player2",
+                (char *) "boo"
+        };
+
+        ChessCmd chessCmd(std::cin, std::cout, 5, args);
         std::thread threadObj(&ChessCmd::run, chessCmd);
         threadObj.join();
     }
     BOOST_CHECK(output.is_equal(
+            "Player 1: foo\n"
+            "Player 2: boo\n"
             " abcdefgh \n"
             "8rnbqkbnr8\n"
             "7pppppppp7\n"
@@ -40,3 +50,34 @@ BOOST_AUTO_TEST_CASE(show_chess_board_on_startup, *utf::timeout(5)) {
             " abcdefgh \n"
     ));
 }
+
+BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_with_default_user_names, *utf::timeout(5)) {
+    boost::test_tools::output_test_stream output;
+    {
+        cout_redirect guard(output.rdbuf());
+
+        char *args[] = {
+                (char *) "app_path"
+        };
+
+        ChessCmd chessCmd(std::cin, std::cout, 1, args);
+        std::thread threadObj(&ChessCmd::run, chessCmd);
+        threadObj.join();
+    }
+    BOOST_CHECK(output.is_equal(
+            "Player 1: A\n"
+            "Player 2: B\n"
+            " abcdefgh \n"
+            "8rnbqkbnr8\n"
+            "7pppppppp7\n"
+            "6........6\n"
+            "5........5\n"
+            "4........4\n"
+            "3........3\n"
+            "2PPPPPPPP2\n"
+            "1RNBQKBNR1\n"
+            " abcdefgh \n"
+    ));
+}
+
+

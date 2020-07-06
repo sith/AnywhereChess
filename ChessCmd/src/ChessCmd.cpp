@@ -2,15 +2,44 @@
 #include <PieceToCharMapper.h>
 #include "ChessCmd.h"
 
-ChessCmd::ChessCmd(std::istream &istream, std::ostream &ostream) : istream(istream), ostream(ostream) {}
+#include <boost/program_options.hpp>
+
+namespace po = boost::program_options;
 
 void ChessCmd::run() {
+    po::options_description desc("Allowed options");
+    desc.add_options()
+            ("help", "produce help message")
+            ("player1", po::value<std::string>()->default_value("A"), "name of first player")
+            ("player2", po::value<std::string>()->default_value("B"), "name of second player");
+
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
+
+    if (vm.count("help")) {
+        ostream << desc << "\n";
+        return;
+    }
+
+    std::string player1 = vm["player1"].as<std::string>();
+    std::string player2 = vm["player2"].as<std::string>();
+
+    ostream << "Player 1: " << player1 << '\n';
+    ostream << "Player 2: " << player2 << '\n';
+
     ChessGame chessGame{};
     ostream << chessGame;
 }
 
-std::ostream &operator<<(std::ostream &os, const ChessGame &chessGame) {
+ChessCmd::ChessCmd(std::istream &istream, std::ostream &ostream, int argc, char **argv) : istream(istream),
+                                                                                          ostream(ostream),
+                                                                                          argc(argc),
+                                                                                          argv(argv) {
 
+}
+
+std::ostream &operator<<(std::ostream &os, const ChessGame &chessGame) {
     const Board &board = chessGame.getBoard();
     os << " abcdefgh \n";
 

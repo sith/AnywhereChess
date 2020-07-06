@@ -10,11 +10,15 @@
 
 class ChessCmd {
 private:
+
     std::istream &istream;
     std::ostream &ostream;
+    int argc;
+    char **argv;
 public:
+    ChessCmd(std::istream &istream, std::ostream &ostream, int argc, char **argv);
 
-    ChessCmd(std::istream &istream, std::ostream &ostream);
+public:
 
     void run();
 };
