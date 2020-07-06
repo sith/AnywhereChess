@@ -80,4 +80,34 @@ BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_with_default_user_names, *utf::
     ));
 }
 
+BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_and_ignore_unrecognized_params, *utf::timeout(5)) {
+    boost::test_tools::output_test_stream output;
+    {
+        cout_redirect guard(output.rdbuf());
+
+        char *args[] = {
+                (char *) "app_path",
+                (char *) "--hello_world"
+        };
+
+        ChessCmd chessCmd(std::cin, std::cout, 2, args);
+        std::thread threadObj(&ChessCmd::run, chessCmd);
+        threadObj.join();
+    }
+    BOOST_CHECK(output.is_equal(
+            "Player 1: A\n"
+            "Player 2: B\n"
+            " abcdefgh \n"
+            "8rnbqkbnr8\n"
+            "7pppppppp7\n"
+            "6........6\n"
+            "5........5\n"
+            "4........4\n"
+            "3........3\n"
+            "2PPPPPPPP2\n"
+            "1RNBQKBNR1\n"
+            " abcdefgh \n"
+    ));
+}
+
 

@@ -14,7 +14,7 @@ void ChessCmd::run() {
             ("player2", po::value<std::string>()->default_value("B"), "name of second player");
 
     po::variables_map vm;
-    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::store(po::command_line_parser (argc, argv).options(desc).allow_unregistered().run(), vm);
     po::notify(vm);
 
     if (vm.count("help")) {
