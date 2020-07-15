@@ -14,6 +14,8 @@ struct Piece {
     const PieceColor pieceColor;
     const PieceType pieceType;
 
+    Piece();
+
     Piece(PieceColor pieceColor, PieceType pieceType);
 
     bool operator==(const Piece &rhs) const;

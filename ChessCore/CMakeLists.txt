@@ -7,9 +7,10 @@ find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 
 add_library(ChessCore
         src/Board.cpp
-        src/ChessGame.cpp
         src/Position.cpp
-        src/Piece.cpp)
+        src/Piece.cpp
+        src/Move.cpp
+        src/BoardBuilder.cpp)
 target_include_directories(ChessCore PUBLIC include)
 
 add_executable(ChessCore_tests test/include/BoardTest.h test/TestUtils.cpp test/ChessCoreTests.cpp)

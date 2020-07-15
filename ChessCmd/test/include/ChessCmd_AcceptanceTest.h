@@ -3,6 +3,12 @@
 #include <boost/program_options/config.hpp>
 #include <thread>
 #include <ChessCmd.h>
+#include <iostream>
+#include <cassert>
+#include <string>
+#include <boost/iostreams/stream.hpp>
+#include <boost/iostreams/detail/ios.hpp> // ios_base::beg.
+#include <fstream>
 
 namespace utf = boost::unit_test;
 
@@ -28,10 +34,11 @@ BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_with_user_names, *utf::timeout(
                 (char *) "--player1",
                 (char *) "foo",
                 (char *) "--player2",
-                (char *) "boo"
+                (char *) "boo",
+                (char *) "--noGame"
         };
 
-        ChessCmd chessCmd(std::cin, std::cout, 5, args);
+        ChessCmd chessCmd(std::cin, std::cout, 6, args);
         std::thread threadObj(&ChessCmd::run, chessCmd);
         threadObj.join();
     }
@@ -57,7 +64,8 @@ BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_with_default_user_names, *utf::
         cout_redirect guard(output.rdbuf());
 
         char *args[] = {
-                (char *) "app_path"
+                (char *) "app_path",
+                (char *) "--noGame",
         };
 
         ChessCmd chessCmd(std::cin, std::cout, 1, args);

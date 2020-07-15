@@ -5,27 +5,55 @@
 #ifndef ANYWHERECHESS_BOARD_H
 #define ANYWHERECHESS_BOARD_H
 
-
-static const int size = 8;
+constexpr int boardSize = 8;
+constexpr int arraySize = boardSize * boardSize;
 
 #include <ostream>
 #include "Position.h"
 
+
+enum Row {
+    _1,
+    _2,
+    _3,
+    _4,
+    _5,
+    _6,
+    _7,
+    _8,
+};
+
+enum Column {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+};
+
 class Board {
-    Piece *board[size][size] = {{nullptr}};
+    Piece **board = new Piece *[boardSize * boardSize];
 
-    [[nodiscard]] int toRowIndex(char rowLabel) const;
+    int toIndex(Column column, Row row) const;
 
-    [[nodiscard]] int toColumnIndex(char columnLabel) const;
+    friend bool test(const Board &board);
 
 public:
-    [[nodiscard]] const Position get(char column, char row) const;
+
+    [[nodiscard]] const Position get(Column column, Row row) const;
 
     Board();
 
     Board(const Board &board) = delete;
 
+    Board(Board &&newBoard);
+
     ~Board();
+
+
 };
 
 

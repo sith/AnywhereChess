@@ -1,61 +1,70 @@
 #include <Position.h>
 #include <Board.h>
 
-const Position Board::get(char column, char row) const {
-    Piece *piece = board[toColumnIndex(column)][toRowIndex(row)];
+const Position Board::get(Column column, Row row) const {
+    Piece *piece = board[toIndex(column, row)];
     return Position(piece);
 }
 
 Board::Board() {
-    board[toColumnIndex('a')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::ROOK);
-    board[toColumnIndex('b')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::KNIGHT);
-    board[toColumnIndex('c')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::BISHOP);
-    board[toColumnIndex('d')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::QUEEN);
-    board[toColumnIndex('e')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::KING);
-    board[toColumnIndex('f')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::BISHOP);
-    board[toColumnIndex('g')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::KNIGHT);
-    board[toColumnIndex('h')][toRowIndex('1')] = new Piece(PieceColor::WHITE, PieceType::ROOK);
 
-    board[toColumnIndex('a')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
-    board[toColumnIndex('b')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
-    board[toColumnIndex('c')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
-    board[toColumnIndex('d')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
-    board[toColumnIndex('e')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
-    board[toColumnIndex('f')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
-    board[toColumnIndex('g')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
-    board[toColumnIndex('h')][toRowIndex('2')] = new Piece(PieceColor::WHITE, PieceType::POND);
+    for (int i = 0; i < arraySize; i++) {
+        board[i] = nullptr;
+    }
 
-    board[toColumnIndex('a')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::ROOK);
-    board[toColumnIndex('b')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::KNIGHT);
-    board[toColumnIndex('c')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::BISHOP);
-    board[toColumnIndex('d')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::QUEEN);
-    board[toColumnIndex('e')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::KING);
-    board[toColumnIndex('f')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::BISHOP);
-    board[toColumnIndex('g')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::KNIGHT);
-    board[toColumnIndex('h')][toRowIndex('8')] = new Piece(PieceColor::BLACK, PieceType::ROOK);
+    board[toIndex(Column::A, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::ROOK);
+    board[toIndex(Column::B, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::KNIGHT);
+    board[toIndex(Column::C, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::BISHOP);
+    board[toIndex(Column::D, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::QUEEN);
+    board[toIndex(Column::E, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::KING);
+    board[toIndex(Column::F, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::BISHOP);
+    board[toIndex(Column::G, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::KNIGHT);
+    board[toIndex(Column::H, Row::_1)] = new Piece(PieceColor::WHITE, PieceType::ROOK);
 
-    board[toColumnIndex('a')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-    board[toColumnIndex('b')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-    board[toColumnIndex('c')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-    board[toColumnIndex('d')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-    board[toColumnIndex('e')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-    board[toColumnIndex('f')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-    board[toColumnIndex('g')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-    board[toColumnIndex('h')][toRowIndex('7')] = new Piece(PieceColor::BLACK, PieceType::POND);
-}
+    board[toIndex(Column::A, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
+    board[toIndex(Column::B, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
+    board[toIndex(Column::C, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
+    board[toIndex(Column::D, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
+    board[toIndex(Column::E, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
+    board[toIndex(Column::F, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
+    board[toIndex(Column::G, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
+    board[toIndex(Column::H, Row::_2)] = new Piece(PieceColor::WHITE, PieceType::POND);
 
-int Board::toRowIndex(char rowLabel) const {
-    return rowLabel - '1';
-}
+    board[toIndex(Column::A, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
+    board[toIndex(Column::B, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
+    board[toIndex(Column::C, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
+    board[toIndex(Column::D, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
+    board[toIndex(Column::E, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
+    board[toIndex(Column::F, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
+    board[toIndex(Column::G, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
+    board[toIndex(Column::H, Row::_7)] = new Piece(PieceColor::BLACK, PieceType::POND);
 
-int Board::toColumnIndex(char columnLabel) const {
-    return columnLabel - 'a';
+    board[toIndex(Column::A, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::ROOK);
+    board[toIndex(Column::B, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::KNIGHT);
+    board[toIndex(Column::C, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::BISHOP);
+    board[toIndex(Column::D, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::QUEEN);
+    board[toIndex(Column::E, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::KING);
+    board[toIndex(Column::F, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::BISHOP);
+    board[toIndex(Column::G, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::KNIGHT);
+    board[toIndex(Column::H, Row::_8)] = new Piece(PieceColor::BLACK, PieceType::ROOK);
 }
 
 Board::~Board() {
-    for (const auto &row : board) {
-        for (const auto &piece : row) {
-            delete piece;
-        }
+    if (board == nullptr) {
+        return;
     }
+    for (int i = 0; i < arraySize; i++) {
+        delete board[i];
+    }
+    delete[] board;
+}
+
+Board::Board(Board &&newBoard) {
+    Piece **tmp = newBoard.board;
+    newBoard.board = nullptr;
+    board = tmp;
+}
+
+int Board::toIndex(Column column, Row row) const {
+    return row * boardSize + column;
 }

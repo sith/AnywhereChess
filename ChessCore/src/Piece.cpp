@@ -14,3 +14,5 @@ bool Piece::operator==(const Piece &rhs) const {
 bool Piece::operator!=(const Piece &rhs) const {
     return !(rhs == *this);
 }
+
+Piece::Piece() : pieceColor{PieceColor::WHITE}, pieceType{PieceType::POND} {}

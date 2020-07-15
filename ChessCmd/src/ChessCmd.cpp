@@ -1,7 +1,6 @@
 #include <Board.h>
-#include <PieceToCharMapper.h>
 #include "ChessCmd.h"
-
+#include "GameController.h"
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
@@ -11,11 +10,13 @@ void ChessCmd::run() {
     desc.add_options()
             ("help", "produce help message")
             ("player1", po::value<std::string>()->default_value("A"), "name of first player")
-            ("player2", po::value<std::string>()->default_value("B"), "name of second player");
+            ("player2", po::value<std::string>()->default_value("B"), "name of second player")
+            ("noGame", po::bool_switch(), "skips the game. Is used for testing purpose");
 
     po::variables_map vm;
-    po::store(po::command_line_parser (argc, argv).options(desc).allow_unregistered().run(), vm);
+    po::store(po::command_line_parser(argc, argv).options(desc).allow_unregistered().run(), vm);
     po::notify(vm);
+
 
     if (vm.count("help")) {
         ostream << desc << "\n";
@@ -28,8 +29,14 @@ void ChessCmd::run() {
     ostream << "Player 1: " << player1 << '\n';
     ostream << "Player 2: " << player2 << '\n';
 
-    ChessGame chessGame{};
+    ChessGame<std::string> chessGame{player1, player2};
     ostream << chessGame;
+
+    if (vm["noGame"].as<bool>()) {
+        return;
+    }
+
+    playGame(chessGame);
 }
 
 ChessCmd::ChessCmd(std::istream &istream, std::ostream &ostream, int argc, char **argv) : istream(istream),
@@ -37,21 +44,12 @@ ChessCmd::ChessCmd(std::istream &istream, std::ostream &ostream, int argc, char 
                                                                                           argc(argc),
                                                                                           argv(argv) {
 
+
 }
 
-std::ostream &operator<<(std::ostream &os, const ChessGame &chessGame) {
-    const Board &board = chessGame.getBoard();
-    os << " abcdefgh \n";
 
-    for (char row = '8'; row >= '1'; row--) {
-        os << row;
-        for (char column = 'a'; column <= 'h'; column++) {
-            const Position &position = board.get(column, row);
-            os << mapPositionToChar(position);
-        }
-        os << row << '\n';
-    }
-    os << " abcdefgh \n";
-    return os;
+void ChessCmd::playGame(ChessGame<std::string> &game) {
+
+
 }
 

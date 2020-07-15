@@ -6,13 +6,15 @@
 #include <Piece.h>
 #include <Board.h>
 #include "TestUtils.h"
+
 std::ostream &operator<<(std::ostream &os, const Piece &piece) {
-//    os << "pieceColor: " << piece.pieceColor << " pieceType: " << piece.pieceType;
+//    os << "pieceColor: " << static_cast<int>(piece.pieceColor) << " pieceType: " << static_cast<int>(piece.pieceType);
+    throw "not implemented";
     return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const Board &board) {
-//    os << "pieceColor: " << piece.pieceColor << " pieceType: " << piece.pieceType;
+    throw "not implemented";
     return os;
 }
 
