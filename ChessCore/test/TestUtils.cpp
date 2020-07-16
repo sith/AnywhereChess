@@ -18,3 +18,17 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
     return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const MoveResult &moveResult) {
+    switch (moveResult) {
+        case MoveResult::OK:
+            os << "OK";
+            break;
+        case MoveResult::ILLEGAL:
+            os << "ILLEGAL";
+            break;
+        default:
+            os << "Not supported enum. Please debug to see value";
+    }
+    return os;
+}
+

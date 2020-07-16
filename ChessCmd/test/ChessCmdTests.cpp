@@ -9,7 +9,6 @@
 #include "ChessCmd_AcceptanceTest.h"
 #include "PieceToCharMapperTest.h"
 #include "GameControllerTest.h"
-#include "PondMoveTest.h"
 
 
 

@@ -8,6 +8,8 @@
 
 #include "Piece.h"
 #include "Board.h"
+#include "Row.h"
+#include "Column.h"
 
 class BoardBuilder {
 

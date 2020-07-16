@@ -5,14 +5,16 @@
 #ifndef ANYWHERECHESS_MOVE_H
 #define ANYWHERECHESS_MOVE_H
 
+#include "Row.h"
+#include "Column.h"
 
-class Move {
-    const char startColumn;
-    const char startRow;
-    const char endColumn;
-    const char endRow;
-public:
-    Move(char startColumn, char startRow,  char endColumn,  char endRow);
+struct Move {
+    Column startColumn;
+    Row startRow;
+    Column endColumn;
+    Row endRow;
+
+    Move(const Column startColumn, const Row startRow, const Column endColumn, const Row endRow);
 };
 
 

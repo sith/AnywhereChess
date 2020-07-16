@@ -1,5 +1,8 @@
 #include <boost/test/unit_test.hpp>
 #include <Board.h>
+#include "Row.h"
+#include "Column.h"
+#include <TestUtils.h>
 
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece);
 
@@ -16,7 +19,7 @@ BOOST_AUTO_TEST_CASE(initial_board) {
     assertBasePiecePositions(board);
 }
 
-BOOST_AUTO_TEST_CASE(move_board) {
+BOOST_AUTO_TEST_CASE(move_board_instance) {
     Board boardA;
     Board boardB = std::move(boardA);
     BOOST_TEST(isReferenceClean(boardA));

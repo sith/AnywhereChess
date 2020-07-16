@@ -1,6 +1,8 @@
 #include <Board.h>
 #include <ChessGame.h>
 #include <PieceToCharMapper.h>
+#include "Row.h"
+#include "Column.h"
 
 constexpr std::initializer_list<Column> columns = {A, B, C, D, E, F, G, H};
 constexpr std::initializer_list<Row> rows = {_1, _2, _3, _4, _5, _6, _7, _8};

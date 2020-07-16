@@ -3,6 +3,8 @@
 
 #include "Board.h"
 #include "Move.h"
+#include "MoveResult.h"
+#include "MoveValidator.h"
 
 template<typename PLAYER>
 class ChessGame {
@@ -10,6 +12,16 @@ class ChessGame {
     const PLAYER &player2;
     PLAYER &currentPlayer;
     Board board;
+    MoveValidator moveValidator;
+
+    void changeCurrentPlayer() {
+        if (currentPlayer == player1) {
+            currentPlayer = player2;
+        } else {
+            currentPlayer = player1;
+        }
+    }
+
 public:
     ChessGame(PLAYER &player1, PLAYER &player2) : player1(player1), player2(player2),
                                                   currentPlayer(player1) {}
@@ -22,8 +34,10 @@ public:
         return currentPlayer;
     }
 
-    void move(Move move) {
-
+    MoveResult move(const Move &move) {
+        board.move(move);
+        changeCurrentPlayer();
+        return MoveResult::OK;
     }
 };
 

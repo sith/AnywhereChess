@@ -3,6 +3,8 @@
 //
 
 #include "Move.h"
+#include "Row.h"
+#include "Column.h"
 
-Move::Move(const char startColumn, const char startRow, const char endColumn, const char endRow) : startColumn(
+Move::Move(const Column startColumn, const Row startRow, const Column endColumn, const Row endRow) : startColumn(
         startColumn), startRow(startRow), endColumn(endColumn), endRow(endRow) {}

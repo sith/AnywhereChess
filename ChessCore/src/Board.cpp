@@ -1,5 +1,7 @@
 #include <Position.h>
 #include <Board.h>
+#include "Row.h"
+#include "Column.h"
 
 const Position Board::get(Column column, Row row) const {
     Piece *piece = board[toIndex(column, row)];
@@ -67,4 +69,8 @@ Board::Board(Board &&newBoard) {
 
 int Board::toIndex(Column column, Row row) const {
     return row * boardSize + column;
+}
+
+void Board::move(const Move &move) {
+
 }
