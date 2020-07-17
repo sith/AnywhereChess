@@ -19,11 +19,11 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
 }
 
 std::ostream &operator<<(std::ostream &os, const MoveResult &moveResult) {
-    switch (moveResult) {
-        case MoveResult::OK:
+    switch (moveResult.status) {
+        case MoveStatus::OK:
             os << "OK";
             break;
-        case MoveResult::ILLEGAL:
+        case MoveStatus::ILLEGAL:
             os << "ILLEGAL";
             break;
         default:

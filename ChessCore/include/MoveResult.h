@@ -4,7 +4,27 @@
 
 #ifndef ANYWHERECHESS_MOVERESULT_H
 #define ANYWHERECHESS_MOVERESULT_H
-enum class MoveResult {
+
+#include "PieceHandle.h"
+
+using TakenPiece = PieceHandle;
+
+enum class MoveStatus {
     OK, ILLEGAL
 };
+
+struct MoveResult {
+    MoveStatus status;
+    PieceHandle takenPiece;
+
+    MoveResult(MoveStatus status, TakenPiece takenPiece);
+
+    MoveResult(MoveStatus status);
+
+    bool operator==(const MoveResult &rhs) const;
+
+    bool operator!=(const MoveResult &rhs) const;
+
+};
+
 #endif //ANYWHERECHESS_MOVERESULT_H

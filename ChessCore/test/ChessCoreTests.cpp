@@ -3,3 +3,4 @@
 #include "BoardTest.h"
 #include "PondMoveTest.h"
 #include "ChessGameTest.h"
+#include "PieceHandleTest.h"
