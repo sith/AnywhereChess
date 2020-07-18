@@ -20,6 +20,8 @@ struct PieceHandle {
 
     PieceHandle(PieceHandle &pieceHandle) = delete;
 
+    PieceHandle(PieceHandle &&pieceHandle) noexcept;
+
     ~PieceHandle();
 
     bool operator==(const PieceHandle &rhs) const;

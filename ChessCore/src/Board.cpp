@@ -62,9 +62,8 @@ Board::~Board() {
 }
 
 Board::Board(Board &&newBoard) {
-    Piece **tmp = newBoard.board;
+    board = newBoard.board;
     newBoard.board = nullptr;
-    board = tmp;
 }
 
 int Board::toIndex(Column column, Row row) const {

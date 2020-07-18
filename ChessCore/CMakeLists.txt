@@ -11,10 +11,15 @@ add_library(ChessCore
         src/Piece.cpp
         src/Move.cpp
         src/BoardBuilder.cpp
-        src/ChessRuleService.cpp include/PieceHandle.h src/MoveResult.cpp src/PieceHandle.cpp test/include/MemoryManagmentUtils.h)
+        src/ChessRuleService.cpp
+        src/MoveResult.cpp
+        src/PieceHandle.cpp)
 target_include_directories(ChessCore PUBLIC include)
 
-add_executable(ChessCore_tests test/include/BoardTest.h test/TestUtils.cpp test/ChessCoreTests.cpp test/include/PondMoveTest.h)
+add_executable(ChessCore_tests
+        test/ChessCoreTests.cpp
+        test/TestUtils.cpp
+        )
 target_include_directories(ChessCore_tests PUBLIC test/include)
 target_link_libraries(ChessCore_tests PRIVATE ${Boost_LIBRARIES})
 target_link_libraries(ChessCore_tests PRIVATE ChessCore)

@@ -20,5 +20,14 @@ BOOST_AUTO_TEST_CASE(piece_handle_stores_and_cleans_object) {
     BOOST_CHECK(countOfAllocatedObjectsInFreeSpace == 0);
 }
 
+BOOST_AUTO_TEST_CASE(piece_handle_moves) {
+    Piece *piece = new Piece(PieceColor::WHITE, PieceType::POND);
+    PieceHandle pieceHandleA{piece};
+    PieceHandle pieceHandleB = std::move(pieceHandleA);
+
+    BOOST_CHECK_EQUAL(pieceHandleA.value, nullptr);
+    BOOST_CHECK_EQUAL(pieceHandleB.value, piece);
+}
+
 
 #endif //ANYWHERECHESS_PIECEHANDLETEST_H

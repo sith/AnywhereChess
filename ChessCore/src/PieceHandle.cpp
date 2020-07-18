@@ -13,3 +13,8 @@ bool PieceHandle::operator==(const PieceHandle &rhs) const {
 bool PieceHandle::operator!=(const PieceHandle &rhs) const {
     return !(rhs == *this);
 }
+
+PieceHandle::PieceHandle(PieceHandle &&pieceHandle) noexcept {
+    value = pieceHandle.value;
+    pieceHandle.value = nullptr;
+}
