@@ -1,7 +1,3 @@
-//
-// Created by Fedorov, Alex on 7/16/20.
-//
-
 #include <PieceHandle.h>
 
 PieceHandle::PieceHandle(Piece *value) : value(value) {}

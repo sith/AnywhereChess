@@ -11,7 +11,7 @@ add_library(ChessCore
         src/Piece.cpp
         src/Move.cpp
         src/BoardBuilder.cpp
-        src/ChessRuleService.cpp include/PieceHandle.h src/MoveResult.cpp src/PieceHandle.cpp)
+        src/ChessRuleService.cpp include/PieceHandle.h src/MoveResult.cpp src/PieceHandle.cpp test/include/MemoryManagmentUtils.h)
 target_include_directories(ChessCore PUBLIC include)
 
 add_executable(ChessCore_tests test/include/BoardTest.h test/TestUtils.cpp test/ChessCoreTests.cpp test/include/PondMoveTest.h)
