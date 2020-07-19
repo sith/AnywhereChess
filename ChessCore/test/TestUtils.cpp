@@ -19,7 +19,12 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
 }
 
 std::ostream &operator<<(std::ostream &os, const MoveResult &moveResult) {
-    switch (moveResult.status) {
+    os << moveResult.status;
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const MoveStatus &moveStatus) {
+    switch (moveStatus) {
         case MoveStatus::OK:
             os << "OK";
             break;

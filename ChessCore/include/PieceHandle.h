@@ -7,22 +7,20 @@
 
 #include "Piece.h"
 
-struct PieceHandle {
+class PieceHandle {
     Piece *value;
-
-    Piece getValue() const {
-        return *value;
-    }
-
-    PieceHandle() {}
-
-    PieceHandle(Piece *value);
+public:
+    explicit PieceHandle(Piece *value);
 
     PieceHandle(PieceHandle &pieceHandle) = delete;
 
     PieceHandle(PieceHandle &&pieceHandle) noexcept;
 
     ~PieceHandle();
+
+    [[nodiscard]] Piece getValue() const;
+
+    bool hasValue();
 
     bool operator==(const PieceHandle &rhs) const;
 

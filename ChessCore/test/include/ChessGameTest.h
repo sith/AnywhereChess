@@ -12,11 +12,11 @@ BOOST_AUTO_TEST_CASE(proper_move_switches_player) {
     ChessGame<std::string> chessGame{playerA, playerB};
 
     MoveResult resultOfPlayerAMove = chessGame.move(Move{E, _2, E, _3});
-    BOOST_CHECK_EQUAL(resultOfPlayerAMove, MoveStatus::OK);
+    BOOST_CHECK_EQUAL(resultOfPlayerAMove.status, MoveStatus::OK);
     BOOST_CHECK_EQUAL(chessGame.getCurrentPlayer(), playerB);
 
     MoveResult resultOfPlayerBMove = chessGame.move(Move{E, _7, E, _6});
-    BOOST_CHECK_EQUAL(resultOfPlayerBMove, MoveStatus::OK);
+    BOOST_CHECK_EQUAL(resultOfPlayerBMove.status, MoveStatus::OK);
     BOOST_CHECK_EQUAL(chessGame.getCurrentPlayer(), playerA);
 }
 
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(inproper_move_does_not_swith_player) {
 
     MoveResult resultOfPlayerAMove = chessGame.move(Move{E, _2, E, _8});
     BOOST_CHECK_EQUAL(chessGame.getCurrentPlayer(), playerA);
-    BOOST_CHECK_EQUAL(resultOfPlayerAMove, MoveStatus::ILLEGAL);
+    BOOST_CHECK_EQUAL(resultOfPlayerAMove.status, MoveStatus::ILLEGAL);
 }
 
 

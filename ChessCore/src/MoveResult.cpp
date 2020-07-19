@@ -4,16 +4,13 @@
 
 #include <MoveResult.h>
 
-MoveResult::MoveResult(MoveStatus status, TakenPiece takenPiece) {
+MoveResult::MoveResult(MoveStatus status) : status{status} {
 }
 
 bool MoveResult::operator==(const MoveResult &rhs) const {
-    return status == rhs.status &&
-           takenPiece == rhs.takenPiece;
+    return status == rhs.status;
 }
 
 bool MoveResult::operator!=(const MoveResult &rhs) const {
     return !(rhs == *this);
 }
-
-MoveResult::MoveResult(MoveStatus status) : status(status) {}

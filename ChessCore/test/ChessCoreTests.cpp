@@ -4,3 +4,4 @@
 #include "PondMoveTest.h"
 #include "ChessGameTest.h"
 #include "PieceHandleTest.h"
+#include "ChessRuleServiceTest.h"

@@ -18,3 +18,11 @@ PieceHandle::PieceHandle(PieceHandle &&pieceHandle) noexcept {
     value = pieceHandle.value;
     pieceHandle.value = nullptr;
 }
+
+Piece PieceHandle::getValue() const {
+    return *value;
+}
+
+bool PieceHandle::hasValue() {
+    return value != nullptr;
+}

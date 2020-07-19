@@ -13,4 +13,7 @@ std::ostream &operator<<(std::ostream &os, const Board &board);
 
 std::ostream &operator<<(std::ostream &os, const MoveResult &moveResult);
 
+std::ostream &operator<<(std::ostream &os, const MoveStatus &moveStatus);
+
+
 #endif //ANYWHERECHESS_TESTUTILS_H

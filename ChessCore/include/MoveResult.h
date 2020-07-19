@@ -7,19 +7,19 @@
 
 #include "PieceHandle.h"
 
-using TakenPiece = PieceHandle;
+//using TakenPiece = PieceHandle;
 
-enum class MoveStatus {
+enum class
+        MoveStatus {
     OK, ILLEGAL
 };
 
 struct MoveResult {
     MoveStatus status;
-    PieceHandle takenPiece;
+//    PieceHandle takenPiece;
 
-    MoveResult(MoveStatus status, TakenPiece takenPiece);
 
-    MoveResult(MoveStatus status);
+    explicit MoveResult(MoveStatus status);
 
     bool operator==(const MoveResult &rhs) const;
 
