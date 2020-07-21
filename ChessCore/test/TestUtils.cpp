@@ -36,4 +36,3 @@ std::ostream &operator<<(std::ostream &os, const MoveStatus &moveStatus) {
     }
     return os;
 }
-

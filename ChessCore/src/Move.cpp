@@ -8,3 +8,16 @@
 
 Move::Move(const Column startColumn, const Row startRow, const Column endColumn, const Row endRow) : startColumn(
         startColumn), startRow(startRow), endColumn(endColumn), endRow(endRow) {}
+
+Move::Move() {}
+
+bool Move::operator==(const Move &rhs) const {
+    return startColumn == rhs.startColumn &&
+           startRow == rhs.startRow &&
+           endColumn == rhs.endColumn &&
+           endRow == rhs.endRow;
+}
+
+bool Move::operator!=(const Move &rhs) const {
+    return !(rhs == *this);
+}

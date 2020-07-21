@@ -8,8 +8,11 @@ find_package(Boost REQUIRED COMPONENTS unit_test_framework program_options iostr
 add_executable(ChessCmd_exec executable/main.cpp)
 target_link_libraries(ChessCmd_exec PRIVATE ChessCmd_library)
 
-
-add_library(ChessCmd_library src/ChessCmd.cpp src/PieceToCharMapper.cpp src/GameController.cpp)
+add_library(ChessCmd_library
+        src/ChessCmd.cpp
+        src/PieceToCharMapper.cpp
+        src/GameController.cpp
+        )
 target_include_directories(ChessCmd_library PUBLIC src/include)
 target_link_libraries(ChessCmd_library PUBLIC ChessCore)
 target_link_libraries(ChessCmd_library PRIVATE ${Boost_LIBRARIES})

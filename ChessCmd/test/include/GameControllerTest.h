@@ -4,6 +4,9 @@
 #include <boost/test/unit_test.hpp>
 #include <GameController.h>
 #include <ChessGame.h>
+#include <TestUtils.h>
+#include <Move.h>
+#include <CmdMove.h>
 
 BOOST_AUTO_TEST_CASE(displays_provided_board_with_next_user) {
     std::stringstream stringstream;
@@ -83,6 +86,19 @@ BOOST_AUTO_TEST_CASE(reads_move_) {
     );
 }
 */
+
+
+BOOST_AUTO_TEST_CASE(read_move) {
+    std::stringstream isstream;
+    isstream << "e2e4\n";
+
+    CmdMove cmdMove;
+    isstream >> cmdMove;
+
+    BOOST_CHECK(cmdMove.valid);
+    Move expectedMove = Move{E, _2, E, _4};
+//    BOOST_CHECK_EQUAL(cmdMove.move, expectedMove);
+}
 
 
 #endif //ANYWHERECHESS_GAMECONTROLLERTEST_H

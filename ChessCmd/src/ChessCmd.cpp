@@ -49,7 +49,9 @@ ChessCmd::ChessCmd(std::istream &istream, std::ostream &ostream, int argc, char 
 
 
 void ChessCmd::playGame(ChessGame<std::string> &game) {
-
-
+    while (true) {
+        CmdMove cmdMove;
+        istream >> cmdMove;
+    }
 }
 

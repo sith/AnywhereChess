@@ -14,7 +14,13 @@ struct Move {
     Column endColumn;
     Row endRow;
 
+    Move();
+
     Move(const Column startColumn, const Row startRow, const Column endColumn, const Row endRow);
+
+    bool operator==(const Move &rhs) const;
+
+    bool operator!=(const Move &rhs) const;
 };
 
 
