@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(read_move) {
 
     BOOST_CHECK(cmdMove.valid);
     Move expectedMove = Move{E, _2, E, _4};
-//    BOOST_CHECK_EQUAL(cmdMove.move, expectedMove);
+    BOOST_CHECK_EQUAL(cmdMove.move, expectedMove);
 }
 
 

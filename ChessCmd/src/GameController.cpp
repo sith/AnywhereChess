@@ -29,11 +29,11 @@ std::ostream &operator<<(std::ostream &os, const ChessGame<std::string> &chessGa
 }
 
 inline Column convertToColumn(char aChar) {
-    return static_cast<Column>(aChar - 'A' + 1);
+    return static_cast<Column>(aChar - 'a');
 }
 
 inline Row convertToRow(char aChar) {
-    return static_cast<Row>(aChar - '1' + 1);
+    return static_cast<Row>(aChar - '1');
 }
 
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove) {
