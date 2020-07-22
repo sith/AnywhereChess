@@ -13,4 +13,8 @@ inline bool invalidColumn(const char &startColumnCharacter);
 
 inline bool invalidRow(const char &startRowCharacter);
 
+inline Column convertToColumn(char aChar);
+
+inline Row convertToRow(char aChar);
+
 #endif //ANYWHERECHESS_GAMECONTROLLER_H

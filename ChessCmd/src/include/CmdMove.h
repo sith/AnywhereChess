@@ -7,6 +7,6 @@
 
 struct CmdMove {
     Move move;
-    bool valid{false};
+    bool validFormat{false};
 };
 #endif //ANYWHERECHESS_CMDMOVE_H

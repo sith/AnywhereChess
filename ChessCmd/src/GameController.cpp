@@ -28,13 +28,14 @@ std::ostream &operator<<(std::ostream &os, const ChessGame<std::string> &chessGa
     return os;
 }
 
-inline Column convertToColumn(char aChar) {
+Column convertToColumn(char aChar) {
     return static_cast<Column>(aChar - 'a');
 }
 
-inline Row convertToRow(char aChar) {
+Row convertToRow(char aChar) {
     return static_cast<Row>(aChar - '1');
 }
+
 
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove) {
 
@@ -53,7 +54,7 @@ std::istream &operator>>(std::istream &is, CmdMove &cmdMove) {
         return is;
     }
 
-    cmdMove.valid = true;
+    cmdMove.validFormat = true;
     cmdMove.move = Move{convertToColumn(startColumnCharacter),
                         convertToRow(startRowCharacter),
                         convertToColumn(endColumnCharacter),

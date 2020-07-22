@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(read_move) {
     CmdMove cmdMove;
     isstream >> cmdMove;
 
-    BOOST_CHECK(cmdMove.valid);
+    BOOST_CHECK(cmdMove.validFormat);
     Move expectedMove = Move{E, _2, E, _4};
     BOOST_CHECK_EQUAL(cmdMove.move, expectedMove);
 }
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(read_all_valid_moves) {
                     CmdMove cmdMove;
                     isstream >> cmdMove;
 
-                    BOOST_CHECK(cmdMove.valid);
+                    BOOST_CHECK(cmdMove.validFormat);
                     /*std::stringstream actualMove;
 
                     BOOST_CHECK_EQUAL(cmdMove.move, expected);*/
@@ -128,7 +128,7 @@ void assertInvalidMove(std::string move) {
     isstream << move;
     CmdMove cmdMove;
     isstream >> cmdMove;
-    BOOST_CHECK(!cmdMove.valid);
+    BOOST_CHECK(!cmdMove.validFormat);
 }
 
 BOOST_AUTO_TEST_CASE(all_invalid_moves) {
