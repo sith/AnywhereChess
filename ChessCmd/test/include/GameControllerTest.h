@@ -100,5 +100,42 @@ BOOST_AUTO_TEST_CASE(read_move) {
     BOOST_CHECK_EQUAL(cmdMove.move, expectedMove);
 }
 
+BOOST_AUTO_TEST_CASE(read_all_valid_moves) {
+    for (char startColumn = 'a'; startColumn <= 'h'; startColumn++) {
+        for (char endColumn = 'a'; endColumn <= 'h'; endColumn++) {
+            for (char startRow = '1'; startRow <= '8'; startRow++) {
+                for (char endRow = '1'; endRow <= '8'; endRow++) {
+                    std::stringstream isstream;
+                    isstream << startColumn << startRow << endColumn << endRow << '\n';
+                    std::string expected = isstream.str();
+
+                    CmdMove cmdMove;
+                    isstream >> cmdMove;
+
+                    BOOST_CHECK(cmdMove.valid);
+                    /*std::stringstream actualMove;
+
+                    BOOST_CHECK_EQUAL(cmdMove.move, expected);*/
+                }
+            }
+        }
+    }
+}
+
+
+void assertInvalidMove(std::string move) {
+    std::stringstream isstream;
+    isstream << move;
+    CmdMove cmdMove;
+    isstream >> cmdMove;
+    BOOST_CHECK(!cmdMove.valid);
+}
+
+BOOST_AUTO_TEST_CASE(all_invalid_moves) {
+    assertInvalidMove("_1a1\n");
+    assertInvalidMove("a_a1\n");
+    assertInvalidMove("a1_1\n");
+    assertInvalidMove("a1a_\n");
+}
 
 #endif //ANYWHERECHESS_GAMECONTROLLERTEST_H

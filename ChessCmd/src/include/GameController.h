@@ -9,4 +9,8 @@ std::ostream &operator<<(std::ostream &os, const ChessGame<std::string> &chessGa
 
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove);
 
+inline bool invalidColumn(const char &startColumnCharacter);
+
+inline bool invalidRow(const char &startRowCharacter);
+
 #endif //ANYWHERECHESS_GAMECONTROLLER_H
