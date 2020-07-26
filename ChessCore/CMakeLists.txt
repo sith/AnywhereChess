@@ -10,7 +10,6 @@ add_library(ChessCore
         src/Position.cpp
         src/Piece.cpp
         src/Move.cpp
-        src/BoardBuilder.cpp
         src/ChessRuleService.cpp
         src/MoveResult.cpp
         src/PieceHandle.cpp)

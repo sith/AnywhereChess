@@ -10,28 +10,35 @@ constexpr int arraySize = boardSize * boardSize;
 #include "Row.h"
 #include "Column.h"
 
-
 class Board {
     Piece **board = new Piece *[boardSize * boardSize];
 
-    int toIndex(Column column, Row row) const;
+    [[nodiscard]] static int toIndex(Column column, Row row);
 
     friend bool test(const Board &board);
 
 public:
 
-    [[nodiscard]] const Position get(Column column, Row row) const;
+    [[nodiscard]] Position get(Column column, Row row) const;
+
+    void set(Column column, Row row, Piece);
 
     Board();
 
     Board(const Board &board) = delete;
+
+    Board &operator=(Board &other) = delete;
+
+    Board &operator=(Board &&other) = delete;
 
     Board(Board &&newBoard);
 
     ~Board();
 
     void move(const Move &move);
+
 };
 
+Board createStandardBoard();
 
 #endif //ANYWHERECHESS_BOARD_H

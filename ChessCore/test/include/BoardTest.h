@@ -14,13 +14,13 @@ const auto isReferenceClean = test;
 
 void assertBasePiecePositions(Board &board);
 
-BOOST_AUTO_TEST_CASE(initial_board) {
-    Board board{};
+BOOST_AUTO_TEST_CASE(standard_board) {
+    Board board = createStandardBoard();
     assertBasePiecePositions(board);
 }
 
 BOOST_AUTO_TEST_CASE(move_board_instance) {
-    Board boardA;
+    Board boardA = createStandardBoard();
     Board boardB = std::move(boardA);
     BOOST_TEST(isReferenceClean(boardA));
     assertBasePiecePositions(boardB);

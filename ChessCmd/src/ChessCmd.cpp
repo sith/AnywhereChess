@@ -43,8 +43,6 @@ ChessCmd::ChessCmd(std::istream &istream, std::ostream &ostream, int argc, char 
                                                                                           ostream(ostream),
                                                                                           argc(argc),
                                                                                           argv(argv) {
-
-
 }
 
 
@@ -52,6 +50,18 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
     while (true) {
         CmdMove cmdMove;
         istream >> cmdMove;
+
+        if (cmdMove.validFormat) {
+            const MoveResult &moveResult = game.move(cmdMove.move);
+            if (moveResult.status == MoveStatus::OK) {
+                ostream << game;
+            } else {
+                ostream << "Invalid move!\n";
+            }
+        } else {
+            ostream << "Invalid format!\n";
+        }
+        ostream << game.getCurrentPlayer() << '>';
     }
 }
 
