@@ -7,7 +7,6 @@
 #include "ChessRuleService.h"
 
 bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
-
     const Position &position = board.get(move.startColumn, move.startRow);
 
     if (!position.hasPiece) {
@@ -15,15 +14,30 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
     }
 
     if (position.piece.pieceType == PieceType::POND) {
-        if (position.piece.pieceColor == PieceColor::WHITE) {
-            if (move.startColumn == move.endColumn && move.endRow - move.startRow == 1) {
-                return true;
-            }
-        } else {
-            if (move.startColumn == move.endColumn && move.startRow - move.endRow == 1) {
-                return true;
-            }
-        }
+        return isValidPondMove(move, position.piece.pieceColor, board);
     }
     return false;
+}
+
+bool ChessRuleService::isValidPondMove(const Move &move, const PieceColor &pieceColor, const Board &board) {
+    bool moveALongTheSameColumn = move.startColumn == move.endColumn;
+    bool verticalMove = isVerticalMove(move, pieceColor);
+
+    if (moveALongTheSameColumn && verticalMove && !board.get(move.endColumn, move.endRow).hasPiece) {
+        return true;
+    }
+
+    return false;
+}
+
+bool ChessRuleService::isVerticalMove(const Move &move, const PieceColor &pieceColor) {
+    bool verticalMove;
+    if (pieceColor == PieceColor::WHITE) {
+        verticalMove =
+                move.endRow - move.startRow == 1 || (move.startRow == _2 && move.endRow - move.startRow == 2);
+    } else {
+        verticalMove =
+                move.startRow - move.endRow == 1 || (move.startRow == _7 && move.startRow - move.endRow == 2);
+    }
+    return verticalMove;
 }
