@@ -126,7 +126,6 @@ BOOST_AUTO_TEST_CASE(black_pond_cannot_move_on_two_squares_if_not_on_a_starting_
     BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _6, E, _4}, board));
 }
 
-
 /*------------------------*/
 
 /*----Rook rules-----*/

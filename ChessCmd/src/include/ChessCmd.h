@@ -21,6 +21,8 @@ public:
     ChessCmd(std::istream &istream, std::ostream &ostream, int argc, char **argv);
 
     void run();
+
+    void printInvalidMessage(const ChessGame<std::string> &game, const char *message) const;
 };
 
 #endif //ANYWHERECHESS_CHESSCMD_H

@@ -51,17 +51,22 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
         CmdMove cmdMove;
         istream >> cmdMove;
 
-        if (cmdMove.validFormat) {
-            const MoveResult &moveResult = game.move(cmdMove.move);
-            if (moveResult.status == MoveStatus::OK) {
-                ostream << game;
-            } else {
-                ostream << "Invalid move!\n";
-            }
-        } else {
-            ostream << "Invalid format!\n";
+        if (!cmdMove.validFormat) {
+            printInvalidMessage(game, "Invalid format!");
+            continue;
         }
-        ostream << game.getCurrentPlayer() << '>';
+
+        const MoveResult &moveResult = game.move(cmdMove.move);
+        if (moveResult.status == MoveStatus::OK) {
+            ostream << game;
+        } else {
+            printInvalidMessage(game, "Invalid move!");
+        }
     }
+}
+
+void ChessCmd::printInvalidMessage(const ChessGame<std::string> &game, const char *message) const {
+    ostream << message << '\n';
+    ostream << game.getCurrentPlayer() << '>';
 }
 
