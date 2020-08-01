@@ -11,6 +11,8 @@ class ChessRuleService {
 
     inline bool isVerticalMove(const Move &move, const PieceColor &pieceColor);
 
+    inline bool isValidRookMove(const Move &move, const Board &board);
+
 public:
     bool isValidMove(const Move &move, const Board &board);
 

@@ -129,7 +129,21 @@ BOOST_AUTO_TEST_CASE(black_pond_cannot_move_on_two_squares_if_not_on_a_starting_
 /*------------------------*/
 
 /*----Rook rules-----*/
+BOOST_AUTO_TEST_CASE(white_rook_moves_to_any_square_along_vertical_line) {
+    Board board;
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::ROOK});
+    ChessRuleService chessRuleService;
 
+    for (int i = Row::_1; i != Row::_8; i++) {
+        Row row = (Row) i;
+
+        if (row == _4) {
+            continue;
+        }
+
+        BOOST_CHECK(chessRuleService.isValidMove(Move{E, _4, E, row}, board));
+    }
+}
 
 
 

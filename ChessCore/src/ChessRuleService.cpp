@@ -13,17 +13,20 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
         return false;
     }
 
-    if (position.piece.pieceType == PieceType::POND) {
-        return isValidPondMove(move, position.piece.pieceColor, board);
+    switch (position.piece.pieceType) {
+        case PieceType::POND:
+            return isValidPondMove(move, position.piece.pieceColor, board);
+        case PieceType::ROOK:
+            return isValidRookMove(move, board);
+        default:
+            return false;
     }
-    return false;
 }
 
 bool ChessRuleService::isValidPondMove(const Move &move, const PieceColor &pieceColor, const Board &board) {
-    bool moveALongTheSameColumn = move.startColumn == move.endColumn;
     bool verticalMove = isVerticalMove(move, pieceColor);
 
-    if (moveALongTheSameColumn && verticalMove && !board.get(move.endColumn, move.endRow).hasPiece) {
+    if (verticalMove && !board.get(move.endColumn, move.endRow).hasPiece) {
         return true;
     }
 
@@ -31,13 +34,27 @@ bool ChessRuleService::isValidPondMove(const Move &move, const PieceColor &piece
 }
 
 bool ChessRuleService::isVerticalMove(const Move &move, const PieceColor &pieceColor) {
-    bool verticalMove;
+
+    if (!move.isVerticalMove()) {
+        return false;
+    }
+
+    bool properMoveLength;
     if (pieceColor == PieceColor::WHITE) {
-        verticalMove =
+        properMoveLength =
                 move.endRow - move.startRow == 1 || (move.startRow == _2 && move.endRow - move.startRow == 2);
     } else {
-        verticalMove =
+        properMoveLength =
                 move.startRow - move.endRow == 1 || (move.startRow == _7 && move.startRow - move.endRow == 2);
     }
-    return verticalMove;
+    return properMoveLength;
+}
+
+bool ChessRuleService::isValidRookMove(const Move &move, const Board &board) {
+
+    if (move.isVerticalMove()) {
+        return true;
+    }
+
+    return false;
 }

@@ -21,6 +21,8 @@ struct Move {
     bool operator==(const Move &rhs) const;
 
     bool operator!=(const Move &rhs) const;
+
+    bool isVerticalMove() const;
 };
 
 

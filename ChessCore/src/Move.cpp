@@ -21,3 +21,7 @@ bool Move::operator==(const Move &rhs) const {
 bool Move::operator!=(const Move &rhs) const {
     return !(rhs == *this);
 }
+
+bool Move::isVerticalMove() const {
+    return startColumn == endColumn;
+}
