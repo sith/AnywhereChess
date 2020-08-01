@@ -6,7 +6,11 @@
 
 Position Board::get(Column column, Row row) const {
     Piece *piece = board[toIndex(column, row)];
-    return Position(piece);
+    if (piece != nullptr) {
+        return Position(*piece);
+    } else {
+        return Position();
+    }
 }
 
 void Board::set(Column column, Row row, Piece piece) {
@@ -34,7 +38,8 @@ int Board::toIndex(Column column, Row row) {
 }
 
 void Board::move(const Move &move) {
-
+    board[toIndex(move.endColumn, move.endRow)] = board[toIndex(move.startColumn, move.startRow)];
+    board[toIndex(move.startColumn, move.startRow)] = nullptr;
 }
 
 Board::Board(Board &&newBoard) {

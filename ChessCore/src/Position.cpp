@@ -1,7 +1,5 @@
 #include "Position.h"
 
-Position::Position(const Piece *piece) : piece(piece), hasPiece(piece != nullptr) {}
+Position::Position() : hasPiece{false} {}
 
-const Piece &Position::getPiece() const {
-    return *piece;
-}
+Position::Position(Piece piece) : piece{piece}, hasPiece{true} {}

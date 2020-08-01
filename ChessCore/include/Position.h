@@ -1,22 +1,15 @@
-//
-// Created by Fedorov, Alex on 7/2/20.
-//
-
 #ifndef ANYWHERECHESS_POSITION_H
 #define ANYWHERECHESS_POSITION_H
 
-
 #include "Piece.h"
 
-class Position {
-   const Piece *piece;
-public:
+struct Position {
+    const Piece piece;
     const bool hasPiece;
 
-    explicit Position(const Piece *piece);
+    Position(const Piece piece);
 
-    [[nodiscard]] const Piece &getPiece() const;
-
+    Position();
 };
 
 

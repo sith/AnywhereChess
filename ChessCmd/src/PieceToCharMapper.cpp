@@ -56,7 +56,7 @@ char mapWhitePiece(const Piece &piece) {
 
 char mapPositionToChar(const Position &position) {
     if (position.hasPiece) {
-        return mapPieceToChar(position.getPiece());
+        return mapPieceToChar(position.piece);
     } else {
         return '.';
     }
