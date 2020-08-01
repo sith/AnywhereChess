@@ -3,6 +3,7 @@
 #include "Row.h"
 #include "Column.h"
 #include <TestUtils.h>
+#include <MemoryManagmentUtils.h>
 
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece);
 
@@ -44,12 +45,16 @@ BOOST_AUTO_TEST_CASE(take_piece) {
     const Piece &blackPond = Piece{PieceColor::BLACK, PieceType::POND};
     board.set(Column::A, Row::_8, blackPond);
 
+    countOfAllocatedObjectsInFreeSpace = 0;
+
     TakenPiece takenPiece = board.move(Move{Column::A, Row::_1, Column::A, Row::_8});
     positionHas(board, Column::A, Row::_8, whiteRook);
     BOOST_CHECK(!board.get(Column::A, Row::_1).hasPiece);
 
     BOOST_CHECK(takenPiece.hasPiece);
     BOOST_CHECK_EQUAL(takenPiece.piece, blackPond);
+
+    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 1);
 }
 
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece) {
