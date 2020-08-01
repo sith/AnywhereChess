@@ -10,6 +10,8 @@ constexpr int arraySize = boardSize * boardSize;
 #include "Row.h"
 #include "Column.h"
 
+typedef Position TakenPiece;
+
 class Board {
     Piece **board = new Piece *[boardSize * boardSize];
 
@@ -35,8 +37,7 @@ public:
 
     ~Board();
 
-    void move(const Move &move);
-
+    TakenPiece move(const Move &move);
 };
 
 Board createStandardBoard();

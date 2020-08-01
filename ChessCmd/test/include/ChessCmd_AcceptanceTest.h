@@ -55,6 +55,7 @@ BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_with_user_names, *utf::timeout(
             "2PPPPPPPP2\n"
             "1RNBQKBNR1\n"
             " abcdefgh \n"
+            "foo>"
     ));
 }
 
@@ -85,6 +86,7 @@ BOOST_AUTO_TEST_CASE(show_chess_board_on_startup_with_default_user_names, *utf::
             "2PPPPPPPP2\n"
             "1RNBQKBNR1\n"
             " abcdefgh \n"
+            "A>"
     ));
 }
 

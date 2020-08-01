@@ -26,38 +26,31 @@ BOOST_AUTO_TEST_CASE(move_board_instance) {
     assertBasePiecePositions(boardB);
 }
 
-
 BOOST_AUTO_TEST_CASE(move_piece) {
     Board board;
     const Piece &expectedPiece = Piece{PieceColor::WHITE, PieceType::KNIGHT};
     board.set(Column::A, Row::_1, expectedPiece);
 
-    board.move(Move{Column::A, Row::_1, Column::H, Row::_8});
+    const TakenPiece &takenPiece = board.move(Move{Column::A, Row::_1, Column::H, Row::_8});
     positionHas(board, Column::H, Row::_8, expectedPiece);
     BOOST_CHECK(!board.get(Column::A, Row::_1).hasPiece);
+    BOOST_CHECK(!takenPiece.hasPiece);
 }
-
-struct Square {
-    bool hasPiece;
-    Piece piece;
-};
 
 BOOST_AUTO_TEST_CASE(take_piece) {
-   /* std::cout << sizeof(PieceColor::WHITE) << "\n";
-    std::cout << sizeof(PieceType::KNIGHT) << "\n";
-    Piece piece{PieceColor::WHITE, PieceType::KNIGHT};
-    std::cout << "piece: " << sizeof(piece) << "\n";
-
-    Square square[64];
-    std::cout << "square array: " << sizeof(square) << "\n";
-
-    Piece pieces[64];
-    std::cout << "piece array: " << sizeof(pieces) << "\n";
-
     Board board;
-    std::cout << "board: "<< sizeof(board) << "\n";*/
-}
+    const Piece &whiteRook = Piece{PieceColor::WHITE, PieceType::ROOK};
+    board.set(Column::A, Row::_1, whiteRook);
+    const Piece &blackPond = Piece{PieceColor::BLACK, PieceType::POND};
+    board.set(Column::A, Row::_8, blackPond);
 
+    TakenPiece takenPiece = board.move(Move{Column::A, Row::_1, Column::A, Row::_8});
+    positionHas(board, Column::A, Row::_8, whiteRook);
+    BOOST_CHECK(!board.get(Column::A, Row::_1).hasPiece);
+
+    BOOST_CHECK(takenPiece.hasPiece);
+    BOOST_CHECK_EQUAL(takenPiece.piece, blackPond);
+}
 
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece) {
     const Position &position = board.get(column, row);

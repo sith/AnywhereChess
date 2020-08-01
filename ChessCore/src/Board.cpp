@@ -37,9 +37,16 @@ int Board::toIndex(Column column, Row row) {
     return row * boardSize + column;
 }
 
-void Board::move(const Move &move) {
+TakenPiece Board::move(const Move &move) {
+    TakenPiece takenPiece = get(move.endColumn, move.endRow);
+
+    Piece *piece = board[toIndex(move.endColumn, move.endRow)];
+
+    delete piece;
     board[toIndex(move.endColumn, move.endRow)] = board[toIndex(move.startColumn, move.startRow)];
     board[toIndex(move.startColumn, move.startRow)] = nullptr;
+
+    return takenPiece;
 }
 
 Board::Board(Board &&newBoard) {
