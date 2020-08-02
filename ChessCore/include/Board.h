@@ -38,6 +38,8 @@ public:
     ~Board();
 
     TakenPiece move(const Move &move);
+
+    [[nodiscard]] bool hasPieceAt(Column column, Row row) const;
 };
 
 Board createStandardBoard();

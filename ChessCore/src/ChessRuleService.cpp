@@ -13,6 +13,10 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
         return false;
     }
 
+    if (move.isNoMove()) {
+        return false;
+    }
+
     switch (position.piece.pieceType) {
         case PieceType::POND:
             return isValidPondMove(move, position.piece.pieceColor, board);
@@ -51,10 +55,35 @@ bool ChessRuleService::isVerticalMove(const Move &move, const PieceColor &pieceC
 }
 
 bool ChessRuleService::isValidRookMove(const Move &move, const Board &board) {
-
-    if (move.isVerticalMove()) {
+    if (
+            (move.isVerticalMove() &&
+             noJumpOverPiecesVertically(move.startColumn, move.startRow, move.endRow, board)) ||
+            (move.isHorizontal() &&
+             noJumpOverPiecesHorizontally(move.startRow, move.startColumn, move.endColumn, board))
+            ) {
         return true;
     }
-
     return false;
+}
+
+bool ChessRuleService::noJumpOverPiecesVertically(Column column, Row startRow, Row endRow, const Board &board) {
+    int delta = startRow <= endRow ? 1 : -1;
+    for (int i = startRow + delta; i != endRow; i = i + delta) {
+        Row row = (Row) i;
+        if (board.hasPieceAt(column, row)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool ChessRuleService::noJumpOverPiecesHorizontally(Row row, Column startColumn, Column endColumn, const Board &board) {
+    int delta = startColumn <= endColumn ? 1 : -1;
+    for (int i = startColumn + delta; i != endColumn; i = i + delta) {
+        Column column = (Column) i;
+        if (board.hasPieceAt(column, row)) {
+            return false;
+        }
+    }
+    return true;
 }

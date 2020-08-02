@@ -54,6 +54,10 @@ Board::Board(Board &&newBoard) {
     newBoard.board = nullptr;
 }
 
+bool Board::hasPieceAt(Column column, Row row) const {
+    return board[toIndex(column, row)] != nullptr;
+}
+
 Board createStandardBoard() {
     Board board{};
 

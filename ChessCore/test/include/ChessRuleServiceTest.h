@@ -7,15 +7,57 @@
 
 #include <boost/test/unit_test.hpp>
 #include <Move.h>
+#include <set>
+#include <boost/format.hpp>
+#include <iostream>
+#include <TestUtils.h>
+
+void assertMoves(Board &board, const std::set<Move> &validMoves);
 
 
 /*----General move rules----*/
-BOOST_AUTO_TEST_CASE(move_to_the_same_square_is_illigal) {
-    Board board = createStandardBoard();
+
+BOOST_AUTO_TEST_CASE(move_to_same_squeare_is_illigal) {
+    Board board;
     ChessRuleService chessRuleService;
 
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _2, E, _2}, board));
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::POND});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::ROOK});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::KNIGHT});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::BISHOP});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::QUEEN});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::POND});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::ROOK});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::KNIGHT});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::BISHOP});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::KING});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
 }
+
 
 BOOST_AUTO_TEST_CASE(improper_move_when_there_is_no_piece) {
     Board board = createStandardBoard();
@@ -44,14 +86,6 @@ BOOST_AUTO_TEST_CASE(proper_black_pond_move_on_one_square) {
     ChessRuleService chessRuleService;
 
     BOOST_CHECK(chessRuleService.isValidMove(Move{E, _7, E, _6}, board));
-}
-
-BOOST_AUTO_TEST_CASE(proper_black_pond_move_on_two_squares_for_starting_position) {
-    Board board;
-    board.set(A, _1, Piece{PieceColor::WHITE, PieceType::ROOK});
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _1, A, _1}, board));
 }
 
 
@@ -128,25 +162,80 @@ BOOST_AUTO_TEST_CASE(black_pond_cannot_move_on_two_squares_if_not_on_a_starting_
 
 /*------------------------*/
 
+
+
 /*----Rook rules-----*/
-BOOST_AUTO_TEST_CASE(white_rook_moves_to_any_square_along_vertical_line) {
+
+BOOST_AUTO_TEST_CASE(rook_valid_moves) {
     Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, E, _1},
+            Move{E, _4, E, _2},
+            Move{E, _4, E, _3},
+            Move{E, _4, E, _5},
+            Move{E, _4, E, _6},
+            Move{E, _4, E, _7},
+            Move{E, _4, E, _8},
+
+            Move{E, _4, A, _4},
+            Move{E, _4, B, _4},
+            Move{E, _4, C, _4},
+            Move{E, _4, D, _4},
+            Move{E, _4, F, _4},
+            Move{E, _4, G, _4},
+            Move{E, _4, H, _4},
+    };
+
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::ROOK});
-    ChessRuleService chessRuleService;
+    assertMoves(board, validMoves);
 
-    for (int i = Row::_1; i != Row::_8; i++) {
-        Row row = (Row) i;
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::ROOK});
+    assertMoves(board, validMoves);
+}
 
-        if (row == _4) {
-            continue;
-        }
+BOOST_AUTO_TEST_CASE(rook_cannot_jump_over_pieces) {
+    Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, E, _3},
+            Move{E, _4, E, _5},
+            Move{E, _4, D, _4},
+            Move{E, _4, F, _4},
+    };
 
-        BOOST_CHECK(chessRuleService.isValidMove(Move{E, _4, E, row}, board));
-    }
+    board.set(E, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(D, _4, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _4, Piece{PieceColor::WHITE, PieceType::POND});
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::ROOK});
+    assertMoves(board, validMoves);
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::ROOK});
+    assertMoves(board, validMoves);
 }
 
 
-
 /*------------------------*/
+
+
+void assertMoves(Board &board, const std::set<Move> &validMoves) {
+    ChessRuleService chessRuleService;
+    for (int i = Row::_1; i <= Row::_8; i++) {
+        for (int j = Column::A; j <= Column::H; j++) {
+            auto row = (Row) i;
+            auto column = (Column) j;
+
+            Move move{E, _4, column, row};
+            if (validMoves.count(move) > 0) {
+                BOOST_CHECK_MESSAGE(chessRuleService.isValidMove(move, board),
+                                    boost::format("Move %1%") % move);
+            } else {
+                BOOST_CHECK_MESSAGE(!chessRuleService.isValidMove(move, board),
+                                    boost::format("Move %1%") % move);
+            }
+        }
+    }
+}
+
 
 #endif //ANYWHERECHESS_CHESSRULESERVICETEST_H

@@ -57,6 +57,14 @@ BOOST_AUTO_TEST_CASE(take_piece) {
     BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 1);
 }
 
+BOOST_AUTO_TEST_CASE(has_piece) {
+    Board board = createStandardBoard();
+
+    BOOST_CHECK(board.hasPieceAt(E, _2));
+    BOOST_CHECK(!board.hasPieceAt(E, _3));
+}
+
+
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece) {
     const Position &position = board.get(column, row);
     BOOST_TEST(position.hasPiece);
