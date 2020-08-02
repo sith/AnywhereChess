@@ -218,6 +218,27 @@ BOOST_AUTO_TEST_CASE(rook_cannot_jump_over_pieces) {
 /*------------------------*/
 
 
+/*---- Knight moves -----*/
+BOOST_AUTO_TEST_CASE(knight_moves) {
+    Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, D, _6},
+            Move{E, _4, F, _6},
+            Move{E, _4, G, _5},
+            Move{E, _4, G, _3},
+            Move{E, _4, F, _2},
+            Move{E, _4, D, _2},
+            Move{E, _4, C, _3},
+            Move{E, _4, C, _5},
+    };
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KNIGHT});
+    assertMoves(board, validMoves);
+}
+
+
+/*------------------------*/
+
 void assertMoves(Board &board, const std::set<Move> &validMoves) {
     ChessRuleService chessRuleService;
     for (int i = Row::_1; i <= Row::_8; i++) {

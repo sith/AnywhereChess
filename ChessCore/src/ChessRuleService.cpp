@@ -22,6 +22,8 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
             return isValidPondMove(move, position.piece.pieceColor, board);
         case PieceType::ROOK:
             return isValidRookMove(move, board);
+        case PieceType::KNIGHT:
+            return isValidKnightMove(move, board);
         default:
             return false;
     }
@@ -86,4 +88,18 @@ bool ChessRuleService::noJumpOverPiecesHorizontally(Row row, Column startColumn,
         }
     }
     return true;
+}
+
+bool ChessRuleService::isValidKnightMove(const Move &move, const Board &board) {
+    int columnDiff = move.startColumn - move.endColumn;
+    int rowDiff = move.startRow - move.endRow;
+
+    if ((columnDiff == 2 || columnDiff == -2) && (rowDiff == 1 || rowDiff == -1)) {
+        return true;
+    }
+    if ((columnDiff == 1 || columnDiff == -1) && (rowDiff == 2 || rowDiff == -2)) {
+        return true;
+    }
+
+    return false;
 }

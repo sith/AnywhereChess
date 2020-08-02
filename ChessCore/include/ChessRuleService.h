@@ -17,6 +17,8 @@ class ChessRuleService {
 
     inline bool noJumpOverPiecesHorizontally(Row row, Column startColumn, Column endColumn, const Board &board);
 
+    inline bool isValidKnightMove(const Move &move, const Board &board);
+
 public:
     bool isValidMove(const Move &move, const Board &board);
 };
