@@ -293,6 +293,108 @@ BOOST_AUTO_TEST_CASE(bishop_cannot_jump_over_pieces_moves) {
 
 /*------------------------*/
 
+
+/*---- Queen moves ----*/
+BOOST_AUTO_TEST_CASE(queen_moves) {
+    Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, A, _8},
+            Move{E, _4, B, _7},
+            Move{E, _4, C, _6},
+            Move{E, _4, D, _5},
+            Move{E, _4, F, _3},
+            Move{E, _4, G, _2},
+            Move{E, _4, H, _1},
+
+            Move{E, _4, B, _1},
+            Move{E, _4, C, _2},
+            Move{E, _4, D, _3},
+            Move{E, _4, F, _5},
+            Move{E, _4, G, _6},
+            Move{E, _4, H, _7},
+
+            Move{E, _4, E, _1},
+            Move{E, _4, E, _2},
+            Move{E, _4, E, _3},
+            Move{E, _4, E, _5},
+            Move{E, _4, E, _6},
+            Move{E, _4, E, _7},
+            Move{E, _4, E, _8},
+
+            Move{E, _4, A, _4},
+            Move{E, _4, B, _4},
+            Move{E, _4, C, _4},
+            Move{E, _4, D, _4},
+            Move{E, _4, F, _4},
+            Move{E, _4, G, _4},
+            Move{E, _4, H, _4},
+
+    };
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::QUEEN});
+    assertMoves(board, validMoves);
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    assertMoves(board, validMoves);
+}
+
+BOOST_AUTO_TEST_CASE(queen_cannot_jump_over_pieces_moves) {
+    Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, F, _5},
+            Move{E, _4, D, _5},
+            Move{E, _4, F, _3},
+            Move{E, _4, D, _3},
+
+            Move{E, _4, E, _3},
+            Move{E, _4, E, _5},
+            Move{E, _4, D, _4},
+            Move{E, _4, F, _4},
+    };
+
+    board.set(D, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(D, _3, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _3, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(E, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(D, _4, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _4, Piece{PieceColor::WHITE, PieceType::POND});
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::QUEEN});
+    assertMoves(board, validMoves);
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    assertMoves(board, validMoves);
+}
+
+
+/*------------------------*/
+
+/*---- King moves -----*/
+BOOST_AUTO_TEST_CASE(king_moves) {
+    Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, F, _5},
+            Move{E, _4, D, _5},
+            Move{E, _4, F, _3},
+            Move{E, _4, D, _3},
+
+            Move{E, _4, E, _3},
+            Move{E, _4, E, _5},
+            Move{E, _4, D, _4},
+            Move{E, _4, F, _4},
+    };
+
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KING});
+    assertMoves(board, validMoves);
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KING});
+    assertMoves(board, validMoves);
+}
+
+/*------------------------*/
 void assertMoves(Board &board, const std::set<Move> &validMoves) {
     ChessRuleService chessRuleService;
     for (int i = Row::_1; i <= Row::_8; i++) {
