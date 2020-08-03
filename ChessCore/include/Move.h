@@ -29,6 +29,8 @@ struct Move {
     bool isNoMove() const;
 
     bool isHorizontal() const;
+
+    bool isDiagonal() const;
 };
 
 

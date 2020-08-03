@@ -234,8 +234,62 @@ BOOST_AUTO_TEST_CASE(knight_moves) {
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KNIGHT});
     assertMoves(board, validMoves);
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KNIGHT});
+    assertMoves(board, validMoves);
 }
 
+
+/*------------------------*/
+
+/*--- Bishop Moves ----*/
+
+BOOST_AUTO_TEST_CASE(bishop_moves) {
+    Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, A, _8},
+            Move{E, _4, B, _7},
+            Move{E, _4, C, _6},
+            Move{E, _4, D, _5},
+            Move{E, _4, F, _3},
+            Move{E, _4, G, _2},
+            Move{E, _4, H, _1},
+
+            Move{E, _4, B, _1},
+            Move{E, _4, C, _2},
+            Move{E, _4, D, _3},
+            Move{E, _4, F, _5},
+            Move{E, _4, G, _6},
+            Move{E, _4, H, _7},
+    };
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::BISHOP});
+    assertMoves(board, validMoves);
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::BISHOP});
+    assertMoves(board, validMoves);
+}
+
+BOOST_AUTO_TEST_CASE(bishop_cannot_jump_over_pieces_moves) {
+    Board board;
+    std::set<Move> validMoves{
+            Move{E, _4, F, _5},
+            Move{E, _4, D, _5},
+            Move{E, _4, F, _3},
+            Move{E, _4, D, _3},
+    };
+
+    board.set(D, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(D, _3, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _3, Piece{PieceColor::WHITE, PieceType::POND});
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::BISHOP});
+    assertMoves(board, validMoves);
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::BISHOP});
+    assertMoves(board, validMoves);
+}
 
 /*------------------------*/
 

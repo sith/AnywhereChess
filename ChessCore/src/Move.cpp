@@ -50,3 +50,16 @@ bool Move::operator<(const Move &rhs) const {
     return endRow < rhs.endRow;
 }
 
+bool Move::isDiagonal() const {
+    int rowDiff = startRow - endRow;
+    if (rowDiff < 0) {
+        rowDiff *= -1;
+    }
+    int columnDiff = startColumn - endColumn;
+    if (columnDiff < 0) {
+        columnDiff *= -1;
+    }
+
+    return rowDiff == columnDiff;
+}
+

@@ -17,5 +17,9 @@ std::ostream &operator<<(std::ostream &os, const MoveStatus &moveStatus);
 
 std::ostream &operator<<(std::ostream &os, const Move &moveStatus);
 
+std::ostream &operator<<(std::ostream &os, const Column &column);
+
+std::ostream &operator<<(std::ostream &os, const Row &row);
+
 
 #endif //ANYWHERECHESS_TESTUTILS_H

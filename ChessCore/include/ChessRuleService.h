@@ -19,7 +19,12 @@ class ChessRuleService {
 
     inline bool isValidKnightMove(const Move &move, const Board &board);
 
+    inline bool isValidBishopMove(const Move &move, const Board &board);
+
+    inline bool noJumpOverPiecesDiagonally(const Move &move, const Board &board);
+
 public:
+
     bool isValidMove(const Move &move, const Board &board);
 };
 

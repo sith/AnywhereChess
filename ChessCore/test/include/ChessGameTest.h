@@ -2,6 +2,7 @@
 #define ANYWHERECHESS_CHESSGAMETEST_H
 
 #include <boost/test/unit_test.hpp>
+#include <ChessGame.h>
 
 BOOST_AUTO_TEST_CASE(proper_move_switches_player) {
     std::stringstream stringstream;

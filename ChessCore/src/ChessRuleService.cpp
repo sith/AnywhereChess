@@ -24,6 +24,8 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
             return isValidRookMove(move, board);
         case PieceType::KNIGHT:
             return isValidKnightMove(move, board);
+        case PieceType::BISHOP:
+            return isValidBishopMove(move, board);
         default:
             return false;
     }
@@ -102,4 +104,31 @@ bool ChessRuleService::isValidKnightMove(const Move &move, const Board &board) {
     }
 
     return false;
+}
+
+bool ChessRuleService::isValidBishopMove(const Move &move, const Board &board) {
+
+    if (move.isDiagonal() && noJumpOverPiecesDiagonally(move, board)) {
+        return true;
+    }
+    return false;
+}
+
+bool ChessRuleService::noJumpOverPiecesDiagonally(const Move &move, const Board &board) {
+
+    Column column = move.startColumn;
+    Row row = move.startRow;
+
+    int columnDelta = move.startColumn <= move.endColumn ? 1 : -1;
+    int rowDelta = move.startRow <= move.endRow ? 1 : -1;
+
+    while (column - move.endColumn + columnDelta != 0 && row - move.endRow + rowDelta != 0) {
+        column = (Column) (column + columnDelta);
+        row = (Row) (row + rowDelta);
+
+        if (board.hasPieceAt(column, row)) {
+            return false;
+        }
+    }
+    return true;
 }
