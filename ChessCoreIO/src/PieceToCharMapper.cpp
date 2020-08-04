@@ -1,9 +1,3 @@
-//
-// Created by Fedorov, Alex on 7/3/20.
-//
-
-#include "ChessCmd.h"
-#include <Board.h>
 #include <Piece.h>
 #include "PieceToCharMapper.h"
 

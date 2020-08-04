@@ -5,10 +5,6 @@
 #ifndef ANYWHERECHESS_MOVERESULT_H
 #define ANYWHERECHESS_MOVERESULT_H
 
-#include "PieceHandle.h"
-
-//using TakenPiece = PieceHandle;
-
 enum class
         MoveStatus {
     OK, ILLEGAL
@@ -16,8 +12,6 @@ enum class
 
 struct MoveResult {
     MoveStatus status;
-//    PieceHandle takenPiece;
-
 
     explicit MoveResult(MoveStatus status);
 

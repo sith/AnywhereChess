@@ -7,6 +7,8 @@
 
 #include <Piece.h>
 #include <Position.h>
+#include <Column.h>
+#include <Row.h>
 
 char mapPositionToChar(const Position &position);
 

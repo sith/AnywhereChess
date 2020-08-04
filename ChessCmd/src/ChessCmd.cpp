@@ -1,6 +1,7 @@
 #include <Board.h>
 #include "ChessCmd.h"
 #include "GameController.h"
+#include <ChessCoreIO.h>
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;

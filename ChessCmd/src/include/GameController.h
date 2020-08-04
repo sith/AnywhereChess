@@ -5,7 +5,7 @@
 #include <PieceToCharMapper.h>
 #include <CmdMove.h>
 
-std::ostream &operator<<(std::ostream &os, const ChessGame<std::string> &chessGame);
+
 
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove);
 

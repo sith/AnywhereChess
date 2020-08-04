@@ -10,7 +10,6 @@
 #include <set>
 #include <boost/format.hpp>
 #include <iostream>
-#include <TestUtils.h>
 
 void assertMoves(Board &board, std::set<Move> validMoves, Column startColumn, Row startRow);
 

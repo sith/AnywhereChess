@@ -4,10 +4,13 @@
 #include <Piece.h>
 #include <Board.h>
 #include <MoveResult.h>
+#include <ChessGame.h>
 
 std::ostream &operator<<(std::ostream &os, const Piece &piece);
 
 std::ostream &operator<<(std::ostream &os, const Board &board);
+
+std::ostream &operator<<(std::ostream &os, const ChessGame<std::string> &chessGame);
 
 std::ostream &operator<<(std::ostream &os, const MoveResult &moveResult);
 
@@ -18,5 +21,11 @@ std::ostream &operator<<(std::ostream &os, const Move &moveStatus);
 std::ostream &operator<<(std::ostream &os, const Column &column);
 
 std::ostream &operator<<(std::ostream &os, const Row &row);
+
+std::ostream &operator<<(std::ostream &os, const PieceType &pieceType);
+
+std::ostream &operator<<(std::ostream &os, const PieceColor &pieceColor);
+
+
 
 #endif //ANYWHERECHESS_CHESSCOREIO_H
