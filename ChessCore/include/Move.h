@@ -31,6 +31,8 @@ struct Move {
     bool isHorizontal() const;
 
     bool isDiagonal() const;
+
+    bool isDiagonalOfSize(int size) const;
 };
 
 

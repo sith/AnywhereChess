@@ -99,8 +99,7 @@ BOOST_AUTO_TEST_CASE(white_pond_moves_from_non_starting_postition) {
     assertMoves(board, validMoves, E, _3);
 }
 
-/*
-BOOST_AUTO_TEST_CASE(white_pond_can_make_diagonal_move_when_taking_piece) {
+BOOST_AUTO_TEST_CASE(white_pond_can_make_forward_diagonal_move_when_taking_piece) {
     Board board;
     std::set<Move> validMoves{
             Move{E, _3, E, _4},
@@ -108,7 +107,9 @@ BOOST_AUTO_TEST_CASE(white_pond_can_make_diagonal_move_when_taking_piece) {
             Move{E, _3, F, _4},
     };
     board.set(D, _4, Piece{PieceColor::BLACK, PieceType::POND});
-    board.set(F, _5, Piece{PieceColor::BLACK, PieceType::POND});
+    board.set(F, _4, Piece{PieceColor::BLACK, PieceType::POND});
+    board.set(D, _2, Piece{PieceColor::BLACK, PieceType::POND});
+    board.set(F, _1, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
     assertMoves(board, validMoves, E, _3);
@@ -118,16 +119,13 @@ BOOST_AUTO_TEST_CASE(white_pond_can_not_make_diagonal_move_when_taking_same_colo
     Board board;
     std::set<Move> validMoves{
             Move{E, _3, E, _4},
-            Move{E, _3, D, _4},
-            Move{E, _3, F, _4},
     };
-    board.set(D, _4, Piece{PieceColor::BLACK, PieceType::POND});
-    board.set(F, _5, Piece{PieceColor::BLACK, PieceType::POND});
+    board.set(D, _4, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _5, Piece{PieceColor::WHITE, PieceType::POND});
 
     board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
     assertMoves(board, validMoves, E, _3);
 }
-*/
 
 
 BOOST_AUTO_TEST_CASE(black_pond_moves_from_non_starting_postition) {
@@ -140,77 +138,33 @@ BOOST_AUTO_TEST_CASE(black_pond_moves_from_non_starting_postition) {
     assertMoves(board, validMoves, E, _6);
 }
 
-BOOST_AUTO_TEST_CASE(white_pond_cannot_move_forward_if_there_is_an_other_piece) {
+BOOST_AUTO_TEST_CASE(black_pond_can_make_forward_diagonal_move_when_taking_piece) {
     Board board;
+    std::set<Move> validMoves{
+            Move{E, _6, E, _5},
+            Move{E, _6, D, _5},
+            Move{E, _6, F, _5},
+    };
+    board.set(D, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _5, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(D, _7, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(F, _7, Piece{PieceColor::WHITE, PieceType::POND});
 
-    board.set(E, _2, Piece{PieceColor::WHITE, PieceType::POND});
-    board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
-
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _2, E, _3}, board));
-}
-
-BOOST_AUTO_TEST_CASE(black_pond_cannot_move_forward_if_there_is_an_other_piece) {
-    Board board;
-
-    board.set(E, _7, Piece{PieceColor::BLACK, PieceType::POND});
     board.set(E, _6, Piece{PieceColor::BLACK, PieceType::POND});
-
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _7, E, _6}, board));
+    assertMoves(board, validMoves, E, _6);
 }
 
-
-BOOST_AUTO_TEST_CASE(white_pond_cannot_move_backwards) {
+BOOST_AUTO_TEST_CASE(black_pond_can_not_make_diagonal_move_when_taking_same_color_piece) {
     Board board;
-    board.set(E, _2, Piece{PieceColor::WHITE, PieceType::POND});
-    ChessRuleService chessRuleService;
+    std::set<Move> validMoves{
+            Move{E, _6, E, _5},
+    };
+    board.set(D, _5, Piece{PieceColor::BLACK, PieceType::POND});
+    board.set(F, _5, Piece{PieceColor::BLACK, PieceType::POND});
 
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _2, E, _1}, board));
-}
-
-BOOST_AUTO_TEST_CASE(black_pond_cannot_move_backwards) {
-    Board board;
-    board.set(E, _7, Piece{PieceColor::BLACK, PieceType::POND});
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _7, E, _8}, board));
-}
-
-BOOST_AUTO_TEST_CASE(white_pond_cannot_move_by_diagaonal) {
-    Board board;
-    board.set(E, _2, Piece{PieceColor::WHITE, PieceType::POND});
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _2, F, _3}, board));
-}
-
-BOOST_AUTO_TEST_CASE(black_pond_cannot_move_by_diagonal) {
-    Board board;
-    board.set(E, _7, Piece{PieceColor::BLACK, PieceType::POND});
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _7, F, _6}, board));
-}
-
-BOOST_AUTO_TEST_CASE(white_pond_cannot_move_on_two_squares_if_not_on_a_starting_position) {
-    Board board;
-    board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _3, E, _5}, board));
-}
-
-BOOST_AUTO_TEST_CASE(black_pond_cannot_move_on_two_squares_if_not_on_a_starting_position) {
-    Board board;
     board.set(E, _6, Piece{PieceColor::BLACK, PieceType::POND});
-    ChessRuleService chessRuleService;
-
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _6, E, _4}, board));
+    assertMoves(board, validMoves, E, _6);
 }
-
 /*------------------------*/
 
 

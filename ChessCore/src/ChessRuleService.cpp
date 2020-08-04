@@ -39,8 +39,27 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
 bool ChessRuleService::isValidPondMove(const Move &move, const PieceColor &pieceColor, const Board &board) {
     bool verticalMove = isVerticalMove(move, pieceColor);
 
-    if (verticalMove && !board.get(move.endColumn, move.endRow).hasPiece) {
+    const Position &position = board.get(move.endColumn, move.endRow);
+    if (verticalMove && !position.hasPiece) {
         return true;
+    }
+    if (move.isDiagonalOfSize(1)) {
+        switch (pieceColor) {
+            case PieceColor::WHITE:
+                if (move.endRow > move.startRow
+                    && position.hasPiece
+                    && position.piece.pieceColor != PieceColor::WHITE) {
+                    return true;
+                }
+                break;
+            case PieceColor::BLACK:
+                if (move.endRow < move.startRow
+                    && position.hasPiece
+                    && position.piece.pieceColor != PieceColor::BLACK) {
+                    return true;
+                }
+                break;
+        }
     }
 
     return false;

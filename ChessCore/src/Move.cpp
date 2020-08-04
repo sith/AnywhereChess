@@ -5,6 +5,7 @@
 #include "Move.h"
 #include "Row.h"
 #include "Column.h"
+#include <utils.h>
 
 Move::Move(const Column startColumn, const Row startRow, const Column endColumn, const Row endRow) : startColumn(
         startColumn), startRow(startRow), endColumn(endColumn), endRow(endRow) {}
@@ -51,15 +52,13 @@ bool Move::operator<(const Move &rhs) const {
 }
 
 bool Move::isDiagonal() const {
-    int rowDiff = startRow - endRow;
-    if (rowDiff < 0) {
-        rowDiff *= -1;
-    }
-    int columnDiff = startColumn - endColumn;
-    if (columnDiff < 0) {
-        columnDiff *= -1;
-    }
+    int rowDiff = utils::abs(startRow - endRow);
+    int columnDiff = utils::abs(startColumn - endColumn);
 
     return rowDiff == columnDiff;
+}
+
+bool Move::isDiagonalOfSize(int size) const {
+    return isDiagonal() && utils::abs(startRow - endRow) == size;
 }
 
