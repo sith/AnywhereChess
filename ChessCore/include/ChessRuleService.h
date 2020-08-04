@@ -25,7 +25,16 @@ class ChessRuleService {
 
     inline bool noJumpOverPiecesHorizontally(Row row, Column startColumn, Column endColumn, const Board &board);
 
+    inline bool isProperVerticalMove(const Move &move, const Board &board);
+
+    inline bool isProperHorizontalMove(const Move &move, const Board &board);
+
+    inline bool destinationPositionIsEmpty(const Move &move, const Board &board);
+
+    inline bool hasPieceOfDifferentColor(const Move &move, const Board &board);
+
 public:
+
     bool isValidMove(const Move &move, const Board &board);
 };
 

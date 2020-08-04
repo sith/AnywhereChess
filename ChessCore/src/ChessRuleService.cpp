@@ -5,6 +5,7 @@
 #include <Move.h>
 #include <Board.h>
 #include "ChessRuleService.h"
+#include <utils.h>
 
 bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
     const Position &position = board.get(move.startColumn, move.startRow);
@@ -83,15 +84,29 @@ bool ChessRuleService::isVerticalMove(const Move &move, const PieceColor &pieceC
 }
 
 bool ChessRuleService::isValidRookMove(const Move &move, const Board &board) {
-    if (
-            (move.isVerticalMove() &&
-             noJumpOverPiecesVertically(move.startColumn, move.startRow, move.endRow, board)) ||
-            (move.isHorizontal() &&
-             noJumpOverPiecesHorizontally(move.startRow, move.startColumn, move.endColumn, board))
-            ) {
+    if ((isProperVerticalMove(move, board) || isProperHorizontalMove(move, board))
+        && (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board))) {
         return true;
     }
     return false;
+}
+
+bool ChessRuleService::isProperHorizontalMove(const Move &move, const Board &board) {
+    return (move.isHorizontal() &&
+            noJumpOverPiecesHorizontally(
+                    move.startRow,
+                    move.startColumn,
+                    move.endColumn,
+                    board));
+}
+
+bool ChessRuleService::isProperVerticalMove(const Move &move, const Board &board) {
+    return (move.isVerticalMove() &&
+            noJumpOverPiecesVertically(
+                    move.startColumn,
+                    move.startRow,
+                    move.endRow,
+                    board));
 }
 
 bool ChessRuleService::noJumpOverPiecesVertically(Column column, Row startRow, Row endRow, const Board &board) {
@@ -117,13 +132,16 @@ bool ChessRuleService::noJumpOverPiecesHorizontally(Row row, Column startColumn,
 }
 
 bool ChessRuleService::isValidKnightMove(const Move &move, const Board &board) {
-    int columnDiff = move.startColumn - move.endColumn;
-    int rowDiff = move.startRow - move.endRow;
+    int columnDiff = utils::abs(move.startColumn - move.endColumn);
+    int rowDiff = utils::abs(move.startRow - move.endRow);
 
-    if ((columnDiff == 2 || columnDiff == -2) && (rowDiff == 1 || rowDiff == -1)) {
+    if (columnDiff == 2 && rowDiff == 1 &&
+        (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board))) {
         return true;
     }
-    if ((columnDiff == 1 || columnDiff == -1) && (rowDiff == 2 || rowDiff == -2)) {
+
+    if (columnDiff == 1 && rowDiff == 2 &&
+        (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board))) {
         return true;
     }
 
@@ -131,8 +149,8 @@ bool ChessRuleService::isValidKnightMove(const Move &move, const Board &board) {
 }
 
 bool ChessRuleService::isValidBishopMove(const Move &move, const Board &board) {
-
-    if (move.isDiagonal() && noJumpOverPiecesDiagonally(move, board)) {
+    if (move.isDiagonal() && noJumpOverPiecesDiagonally(move, board) &&
+        (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board))) {
         return true;
     }
     return false;
@@ -161,5 +179,21 @@ bool ChessRuleService::isValidKingMove(const Move &move, const Board &board) {
     int columnDiff = move.startColumn - move.endColumn;
     int rowDiff = move.startRow - move.endRow;
 
-    return (columnDiff <= 1 && columnDiff >= -1) && (rowDiff <= 1 && rowDiff >= -1);
+    return (columnDiff <= 1 && columnDiff >= -1) && (rowDiff <= 1 && rowDiff >= -1) &&
+           (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board));
+}
+
+bool ChessRuleService::destinationPositionIsEmpty(const Move &move, const Board &board) {
+    return !board.hasPieceAt(move.endColumn, move.endRow);
+}
+
+bool ChessRuleService::hasPieceOfDifferentColor(const Move &move, const Board &board) {
+    const Position &startPosition = board.get(move.startColumn, move.startRow);
+    const Position &endPosition = board.get(move.endColumn, move.endRow);
+    if (startPosition.hasPiece
+        && endPosition.hasPiece
+        && endPosition.piece.pieceColor == startPosition.piece.pieceColor) {
+        return false;
+    }
+    return true;
 }
