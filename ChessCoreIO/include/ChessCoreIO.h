@@ -1,10 +1,8 @@
-//
-// Created by Fedorov, Alex on 7/3/20.
-//
+#ifndef ANYWHERECHESS_CHESSCOREIO_H
+#define ANYWHERECHESS_CHESSCOREIO_H
 
-#ifndef ANYWHERECHESS_TESTUTILS_H
-#define ANYWHERECHESS_TESTUTILS_H
-
+#include <Piece.h>
+#include <Board.h>
 #include <MoveResult.h>
 
 std::ostream &operator<<(std::ostream &os, const Piece &piece);
@@ -21,5 +19,4 @@ std::ostream &operator<<(std::ostream &os, const Column &column);
 
 std::ostream &operator<<(std::ostream &os, const Row &row);
 
-
-#endif //ANYWHERECHESS_TESTUTILS_H
+#endif //ANYWHERECHESS_CHESSCOREIO_H

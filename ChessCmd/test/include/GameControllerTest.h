@@ -4,7 +4,7 @@
 #include <boost/test/unit_test.hpp>
 #include <GameController.h>
 #include <ChessGame.h>
-#include <TestUtils.h>
+#include <ChessCoreIO.h>
 #include <Move.h>
 #include <CmdMove.h>
 

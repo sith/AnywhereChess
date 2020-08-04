@@ -21,9 +21,6 @@ struct Piece {
     bool operator==(const Piece &rhs) const;
 
     bool operator!=(const Piece &rhs) const;
-
-    friend std::ostream &operator<<(std::ostream &os, const Piece &piece);
-
 };
 
 

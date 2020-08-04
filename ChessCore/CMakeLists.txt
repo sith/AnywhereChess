@@ -12,15 +12,15 @@ add_library(ChessCore
         src/Move.cpp
         src/ChessRuleService.cpp
         src/MoveResult.cpp
-        src/PieceHandle.cpp)
+        )
 target_include_directories(ChessCore PUBLIC include)
 
 add_executable(ChessCore_tests
         test/ChessCoreTests.cpp
-        test/TestUtils.cpp
         )
 target_include_directories(ChessCore_tests PUBLIC test/include)
 target_link_libraries(ChessCore_tests PRIVATE ${Boost_LIBRARIES})
 target_link_libraries(ChessCore_tests PRIVATE ChessCore)
+target_link_libraries(ChessCore_tests PRIVATE ChessCoreIO)
 
 

@@ -1,11 +1,4 @@
-//
-// Created by Fedorov, Alex on 7/3/20.
-//
-
-#include <iosfwd>
-#include <Piece.h>
-#include <Board.h>
-#include "TestUtils.h"
+#include <ChessCoreIO.h>
 #include <boost/format.hpp>
 
 std::ostream &operator<<(std::ostream &os, const Piece &piece) {

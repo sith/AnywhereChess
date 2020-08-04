@@ -2,7 +2,7 @@
 #include <Board.h>
 #include "Row.h"
 #include "Column.h"
-#include <TestUtils.h>
+#include <ChessCoreIO.h>
 #include <MemoryManagmentUtils.h>
 
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece);
