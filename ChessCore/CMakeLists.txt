@@ -7,7 +7,7 @@ find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 
 add_library(ChessCore
         src/Board.cpp
-        src/Position.cpp
+        src/PieceOptional.cpp
         src/Piece.cpp
         src/Move.cpp
         src/ChessRuleService.cpp

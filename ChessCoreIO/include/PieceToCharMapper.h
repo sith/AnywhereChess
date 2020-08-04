@@ -6,11 +6,11 @@
 #define ANYWHERECHESS_PIECETOCHARMAPPER_H
 
 #include <Piece.h>
-#include <Position.h>
+#include <PieceOptional.h>
 #include <Column.h>
 #include <Row.h>
 
-char mapPositionToChar(const Position &position);
+char mapPositionToChar(const PieceOptional &position);
 
 char mapPieceToChar(const Piece &piece);
 

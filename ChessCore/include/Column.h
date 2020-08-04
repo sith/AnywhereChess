@@ -17,7 +17,7 @@ enum Column {
 };
 
 #include <ostream>
-#include "Position.h"
+#include "PieceOptional.h"
 #include "Move.h"
 #include "Row.h"
 

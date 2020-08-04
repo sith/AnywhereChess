@@ -1,15 +1,15 @@
-#include <Position.h>
+#include <PieceOptional.h>
 #include <Board.h>
 #include <iostream>
 #include "Row.h"
 #include "Column.h"
 
-Position Board::get(Column column, Row row) const {
+PieceOptional Board::get(Column column, Row row) const {
     Piece *piece = board[toIndex(column, row)];
     if (piece != nullptr) {
-        return Position(*piece);
+        return PieceOptional(*piece);
     } else {
-        return Position();
+        return PieceOptional();
     }
 }
 
@@ -38,7 +38,7 @@ int Board::toIndex(Column column, Row row) {
 }
 
 TakenPiece Board::move(const Move &move) {
-    TakenPiece takenPiece = get(move.endColumn, move.endRow);
+    PieceOptional takenPiece = get(move.endColumn, move.endRow);
 
     Piece *piece = board[toIndex(move.endColumn, move.endRow)];
 
