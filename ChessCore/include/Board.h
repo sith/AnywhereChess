@@ -9,9 +9,8 @@ constexpr int arraySize = boardSize * boardSize;
 #include "Move.h"
 #include "Row.h"
 #include "Column.h"
+#include <Types.h>
 
-typedef PieceOptional TakenPiece;
-typedef PieceOptional Position;
 
 class Board {
     Piece **array = new Piece *[boardSize * boardSize]{nullptr};

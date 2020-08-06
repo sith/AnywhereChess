@@ -35,7 +35,7 @@ class ChessRuleService {
 
 public:
 
-    bool isValidMove(const Move &move, const Board &board);
+    bool isValidMove(const Move &move, const Board &board, PieceColor expectedPieceColor);
 };
 
 

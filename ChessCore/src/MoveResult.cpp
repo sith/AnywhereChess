@@ -14,3 +14,5 @@ bool MoveResult::operator==(const MoveResult &rhs) const {
 bool MoveResult::operator!=(const MoveResult &rhs) const {
     return !(rhs == *this);
 }
+
+MoveResult::MoveResult(MoveStatus status, const TakenPiece &takenPiece) : status(status), takenPiece(takenPiece) {}

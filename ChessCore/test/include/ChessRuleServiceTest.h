@@ -11,7 +11,12 @@
 #include <boost/format.hpp>
 #include <iostream>
 
-void assertMoves(Board &board, std::set<Move> validMoves, Column startColumn, Row startRow);
+void assertMoves(
+        Board &board,
+        std::set<Move> validMoves,
+        Column startColumn,
+        Row startRow,
+        PieceColor expectedPieceColor);
 
 
 /*----General move rules----*/
@@ -21,40 +26,40 @@ BOOST_AUTO_TEST_CASE(move_to_same_squeare_is_illigal) {
     ChessRuleService chessRuleService;
 
     board.set(A, _3, Piece{PieceColor::WHITE, PieceType::POND});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::WHITE));
 
     board.set(A, _3, Piece{PieceColor::WHITE, PieceType::ROOK});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::WHITE));
 
     board.set(A, _3, Piece{PieceColor::WHITE, PieceType::KNIGHT});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::WHITE));
 
     board.set(A, _3, Piece{PieceColor::WHITE, PieceType::BISHOP});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::WHITE));
 
     board.set(A, _3, Piece{PieceColor::WHITE, PieceType::QUEEN});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::WHITE));
 
     board.set(A, _3, Piece{PieceColor::WHITE, PieceType::KING});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::WHITE));
 
     board.set(A, _3, Piece{PieceColor::BLACK, PieceType::POND});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::BLACK));
 
     board.set(A, _3, Piece{PieceColor::BLACK, PieceType::ROOK});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::BLACK));
 
     board.set(A, _3, Piece{PieceColor::BLACK, PieceType::KNIGHT});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::BLACK));
 
     board.set(A, _3, Piece{PieceColor::BLACK, PieceType::BISHOP});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::BLACK));
 
     board.set(A, _3, Piece{PieceColor::BLACK, PieceType::QUEEN});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::BLACK));
 
     board.set(A, _3, Piece{PieceColor::BLACK, PieceType::KING});
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _3}, board, PieceColor::BLACK));
 }
 
 
@@ -62,8 +67,22 @@ BOOST_AUTO_TEST_CASE(improper_move_when_there_is_no_piece) {
     Board board = createStandardBoard();
     ChessRuleService chessRuleService;
 
-    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _4, E, _5}, board));
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{E, _4, E, _5}, board, PieceColor::WHITE));
+
+
 }
+
+BOOST_AUTO_TEST_CASE(wrong_piece_color) {
+    Board board;
+    ChessRuleService chessRuleService;
+
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::POND});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _4}, board, PieceColor::BLACK));
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    BOOST_CHECK(!chessRuleService.isValidMove(Move{A, _3, A, _4}, board, PieceColor::WHITE));
+}
+
 
 /*----Pond rules----*/
 
@@ -75,7 +94,7 @@ BOOST_AUTO_TEST_CASE(white_pond_moves_from_starting_postition) {
     };
     board.set(E, _2, Piece{PieceColor::WHITE, PieceType::POND});
 
-    assertMoves(board, validMoves, E, _2);
+    assertMoves(board, validMoves, E, _2, PieceColor::WHITE);
 }
 
 BOOST_AUTO_TEST_CASE(black_pond_moves_from_starting_postition) {
@@ -85,8 +104,7 @@ BOOST_AUTO_TEST_CASE(black_pond_moves_from_starting_postition) {
             Move{E, _7, E, _5},
     };
     board.set(E, _7, Piece{PieceColor::BLACK, PieceType::POND});
-
-    assertMoves(board, validMoves, E, _7);
+    assertMoves(board, validMoves, E, _7, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(white_pond_moves_from_non_starting_postition) {
@@ -96,7 +114,7 @@ BOOST_AUTO_TEST_CASE(white_pond_moves_from_non_starting_postition) {
     };
     board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
 
-    assertMoves(board, validMoves, E, _3);
+    assertMoves(board, validMoves, E, _3, PieceColor::WHITE);
 }
 
 BOOST_AUTO_TEST_CASE(white_pond_can_make_forward_diagonal_move_when_taking_piece) {
@@ -112,7 +130,7 @@ BOOST_AUTO_TEST_CASE(white_pond_can_make_forward_diagonal_move_when_taking_piece
     board.set(F, _1, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
-    assertMoves(board, validMoves, E, _3);
+    assertMoves(board, validMoves, E, _3, PieceColor::WHITE);
 }
 
 BOOST_AUTO_TEST_CASE(white_pond_can_not_make_diagonal_move_when_taking_same_color_piece) {
@@ -124,7 +142,7 @@ BOOST_AUTO_TEST_CASE(white_pond_can_not_make_diagonal_move_when_taking_same_colo
     board.set(F, _5, Piece{PieceColor::WHITE, PieceType::POND});
 
     board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
-    assertMoves(board, validMoves, E, _3);
+    assertMoves(board, validMoves, E, _3, PieceColor::WHITE);
 }
 
 
@@ -135,7 +153,7 @@ BOOST_AUTO_TEST_CASE(black_pond_moves_from_non_starting_postition) {
     };
     board.set(E, _6, Piece{PieceColor::BLACK, PieceType::POND});
 
-    assertMoves(board, validMoves, E, _6);
+    assertMoves(board, validMoves, E, _6, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(black_pond_can_make_forward_diagonal_move_when_taking_piece) {
@@ -151,7 +169,7 @@ BOOST_AUTO_TEST_CASE(black_pond_can_make_forward_diagonal_move_when_taking_piece
     board.set(F, _7, Piece{PieceColor::WHITE, PieceType::POND});
 
     board.set(E, _6, Piece{PieceColor::BLACK, PieceType::POND});
-    assertMoves(board, validMoves, E, _6);
+    assertMoves(board, validMoves, E, _6, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(black_pond_can_not_make_diagonal_move_when_taking_same_color_piece) {
@@ -163,7 +181,7 @@ BOOST_AUTO_TEST_CASE(black_pond_can_not_make_diagonal_move_when_taking_same_colo
     board.set(F, _5, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _6, Piece{PieceColor::BLACK, PieceType::POND});
-    assertMoves(board, validMoves, E, _6);
+    assertMoves(board, validMoves, E, _6, PieceColor::BLACK);
 }
 /*------------------------*/
 
@@ -192,10 +210,10 @@ BOOST_AUTO_TEST_CASE(rook_valid_moves) {
     };
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::ROOK});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::ROOK});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(rook_cannot_jump_over_pieces) {
@@ -213,7 +231,7 @@ BOOST_AUTO_TEST_CASE(rook_cannot_jump_over_pieces) {
     board.set(F, _4, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::ROOK});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
 
     board.set(E, _5, Piece{PieceColor::WHITE, PieceType::POND});
@@ -221,7 +239,7 @@ BOOST_AUTO_TEST_CASE(rook_cannot_jump_over_pieces) {
     board.set(D, _4, Piece{PieceColor::WHITE, PieceType::POND});
     board.set(F, _4, Piece{PieceColor::WHITE, PieceType::POND});
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::ROOK});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(rook_cannot_take_a_same_color_piece) {
@@ -234,7 +252,7 @@ BOOST_AUTO_TEST_CASE(rook_cannot_take_a_same_color_piece) {
     board.set(F, _4, Piece{PieceColor::WHITE, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::ROOK});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
 
     board.set(E, _5, Piece{PieceColor::BLACK, PieceType::POND});
@@ -243,7 +261,7 @@ BOOST_AUTO_TEST_CASE(rook_cannot_take_a_same_color_piece) {
     board.set(F, _4, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::ROOK});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 
@@ -266,10 +284,10 @@ BOOST_AUTO_TEST_CASE(knight_moves) {
     };
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KNIGHT});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KNIGHT});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(knight_can_take_piece) {
@@ -295,7 +313,7 @@ BOOST_AUTO_TEST_CASE(knight_can_take_piece) {
     board.set(C, _5, Piece{PieceColor::BLACK, PieceType::KNIGHT});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KNIGHT});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(D, _6, Piece{PieceColor::WHITE, PieceType::KNIGHT});
     board.set(F, _6, Piece{PieceColor::WHITE, PieceType::KNIGHT});
@@ -307,7 +325,7 @@ BOOST_AUTO_TEST_CASE(knight_can_take_piece) {
     board.set(C, _5, Piece{PieceColor::WHITE, PieceType::KNIGHT});
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KNIGHT});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(knight_cannot_take_piece) {
@@ -325,7 +343,7 @@ BOOST_AUTO_TEST_CASE(knight_cannot_take_piece) {
     board.set(C, _5, Piece{PieceColor::WHITE, PieceType::KNIGHT});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KNIGHT});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(D, _6, Piece{PieceColor::BLACK, PieceType::KNIGHT});
     board.set(F, _6, Piece{PieceColor::BLACK, PieceType::KNIGHT});
@@ -337,7 +355,7 @@ BOOST_AUTO_TEST_CASE(knight_cannot_take_piece) {
     board.set(C, _5, Piece{PieceColor::BLACK, PieceType::KNIGHT});
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KNIGHT});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 
@@ -366,10 +384,10 @@ BOOST_AUTO_TEST_CASE(bishop_moves) {
     };
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::BISHOP});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::BISHOP});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(bishop_cannot_jump_over_pieces_moves) {
@@ -387,7 +405,7 @@ BOOST_AUTO_TEST_CASE(bishop_cannot_jump_over_pieces_moves) {
     board.set(F, _3, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::BISHOP});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(D, _5, Piece{PieceColor::WHITE, PieceType::POND});
     board.set(F, _5, Piece{PieceColor::WHITE, PieceType::POND});
@@ -396,7 +414,7 @@ BOOST_AUTO_TEST_CASE(bishop_cannot_jump_over_pieces_moves) {
 
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::BISHOP});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(bishop_cannot_take_same_color_piece) {
@@ -409,7 +427,7 @@ BOOST_AUTO_TEST_CASE(bishop_cannot_take_same_color_piece) {
     board.set(F, _3, Piece{PieceColor::WHITE, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::BISHOP});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(D, _5, Piece{PieceColor::BLACK, PieceType::POND});
     board.set(F, _5, Piece{PieceColor::BLACK, PieceType::POND});
@@ -418,7 +436,7 @@ BOOST_AUTO_TEST_CASE(bishop_cannot_take_same_color_piece) {
 
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::BISHOP});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 /*------------------------*/
@@ -462,10 +480,10 @@ BOOST_AUTO_TEST_CASE(queen_moves) {
     };
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::QUEEN});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(queen_cannot_jump_over_pieces_moves) {
@@ -492,7 +510,7 @@ BOOST_AUTO_TEST_CASE(queen_cannot_jump_over_pieces_moves) {
     board.set(F, _4, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::QUEEN});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(D, _5, Piece{PieceColor::WHITE, PieceType::POND});
     board.set(F, _5, Piece{PieceColor::WHITE, PieceType::POND});
@@ -504,7 +522,7 @@ BOOST_AUTO_TEST_CASE(queen_cannot_jump_over_pieces_moves) {
     board.set(F, _4, Piece{PieceColor::WHITE, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(queen_cannot_take_same_color_pieces) {
@@ -522,7 +540,7 @@ BOOST_AUTO_TEST_CASE(queen_cannot_take_same_color_pieces) {
     board.set(F, _4, Piece{PieceColor::WHITE, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::QUEEN});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(D, _5, Piece{PieceColor::BLACK, PieceType::POND});
     board.set(F, _5, Piece{PieceColor::BLACK, PieceType::POND});
@@ -534,7 +552,7 @@ BOOST_AUTO_TEST_CASE(queen_cannot_take_same_color_pieces) {
     board.set(F, _4, Piece{PieceColor::BLACK, PieceType::POND});
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 
@@ -565,7 +583,7 @@ BOOST_AUTO_TEST_CASE(king_moves_and_takes_pieces_arround) {
     board.set(F, _4, Piece{PieceColor::BLACK, PieceType::KING});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KING});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(F, _5, Piece{PieceColor::WHITE, PieceType::KING});
     board.set(D, _5, Piece{PieceColor::WHITE, PieceType::KING});
@@ -577,7 +595,7 @@ BOOST_AUTO_TEST_CASE(king_moves_and_takes_pieces_arround) {
     board.set(F, _4, Piece{PieceColor::WHITE, PieceType::KING});
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KING});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 BOOST_AUTO_TEST_CASE(king_cannot_take_same_color_pieces) {
@@ -595,7 +613,7 @@ BOOST_AUTO_TEST_CASE(king_cannot_take_same_color_pieces) {
     board.set(F, _4, Piece{PieceColor::WHITE, PieceType::KING});
 
     board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KING});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::WHITE);
 
     board.set(F, _5, Piece{PieceColor::BLACK, PieceType::KING});
     board.set(D, _5, Piece{PieceColor::BLACK, PieceType::KING});
@@ -607,12 +625,13 @@ BOOST_AUTO_TEST_CASE(king_cannot_take_same_color_pieces) {
     board.set(F, _4, Piece{PieceColor::BLACK, PieceType::KING});
 
     board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KING});
-    assertMoves(board, validMoves, E, _4);
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);
 }
 
 
 /*------------------------*/
-void assertMoves(Board &board, std::set<Move> validMoves, Column startColumn, Row startRow) {
+void
+assertMoves(Board &board, std::set<Move> validMoves, Column startColumn, Row startRow, PieceColor expectedPieceColor) {
     ChessRuleService chessRuleService;
     for (int i = Row::_1; i <= Row::_8; i++) {
         for (int j = Column::A; j <= Column::H; j++) {
@@ -621,11 +640,11 @@ void assertMoves(Board &board, std::set<Move> validMoves, Column startColumn, Ro
 
             Move move{startColumn, startRow, column, row};
             if (validMoves.count(move) > 0) {
-                BOOST_CHECK_MESSAGE(chessRuleService.isValidMove(move, board),
+                BOOST_CHECK_MESSAGE(chessRuleService.isValidMove(move, board, expectedPieceColor),
                                     boost::format("Move %1%") % move);
                 validMoves.erase(move);
             } else {
-                BOOST_CHECK_MESSAGE(!chessRuleService.isValidMove(move, board),
+                BOOST_CHECK_MESSAGE(!chessRuleService.isValidMove(move, board, expectedPieceColor),
                                     boost::format("Move %1%") % move);
             }
         }

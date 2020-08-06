@@ -7,10 +7,14 @@
 #include "ChessRuleService.h"
 #include <utils.h>
 
-bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
+bool ChessRuleService::isValidMove(const Move &move, const Board &board, PieceColor expectedPieceColor) {
     const Position &position = board.get(move.startColumn, move.startRow);
 
     if (!position.hasPiece) {
+        return false;
+    }
+
+    if (position.piece.pieceColor != expectedPieceColor) {
         return false;
     }
 
@@ -31,7 +35,6 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
             return isValidBishopMove(move, board) || isValidRookMove(move, board);
         case PieceType::KING:
             return isValidKingMove(move, board);
-
         default:
             return false;
     }

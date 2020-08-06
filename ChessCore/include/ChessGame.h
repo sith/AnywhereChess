@@ -8,33 +8,31 @@
 
 template<typename PLAYER>
 class ChessGame {
-    const PLAYER &player1;
-    const PLAYER &player2;
+    const PLAYER &playerWithLightColoredPieces;
+    const PLAYER &playerWithDarkColoredPieces;
     const PLAYER *currentPlayer;
     Board board;
     ChessRuleService chessRuleService;
 
     void changeCurrentPlayer() {
-        if (*currentPlayer == player1) {
-            currentPlayer = &player2;
+        if (*currentPlayer == playerWithLightColoredPieces) {
+            currentPlayer = &playerWithDarkColoredPieces;
         } else {
-            currentPlayer = &player1;
+            currentPlayer = &playerWithLightColoredPieces;
         }
     }
 
 public:
-    ChessGame(PLAYER &player1, PLAYER &player2) :
-            player1{player1},
-            player2{player2},
-            currentPlayer{&player1},
-            board{createStandardBoard()} {
-    }
+    ChessGame(PLAYER &player1, PLAYER &player2) : playerWithLightColoredPieces(player1),
+                                                  playerWithDarkColoredPieces(player2),
+                                                  currentPlayer{&player1},
+                                                  board{createStandardBoard()} {}
 
     ChessGame(const PLAYER &player1, const PLAYER &player2, Board &board) :
-            player1(player1),
-            player2(player2),
+            playerWithLightColoredPieces(player1),
+            playerWithDarkColoredPieces(player2),
+            currentPlayer{&player1},
             board{board} {}
-
 
     [[nodiscard]] const Board &getBoard() const {
         return board;
@@ -45,10 +43,12 @@ public:
     }
 
     MoveResult move(const Move &move) {
-        if (chessRuleService.isValidMove(move, board)) {
-            board.move(move);
+        PieceColor expectedPieceColor = currentPlayer == &playerWithLightColoredPieces ? PieceColor::WHITE
+                                                                                      : PieceColor::BLACK;
+        if (chessRuleService.isValidMove(move, board, expectedPieceColor)) {
+            TakenPiece takenPiece = board.move(move);
             changeCurrentPlayer();
-            return MoveResult(MoveStatus::OK);
+            return MoveResult(MoveStatus::OK, takenPiece);
         } else {
             return MoveResult(MoveStatus::ILLEGAL);
         }
