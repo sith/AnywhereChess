@@ -59,6 +59,11 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
 
         const MoveResult &moveResult = game.move(cmdMove.move);
         if (moveResult.status == MoveStatus::OK) {
+
+            if (moveResult.takenPiece.hasPiece) {
+                ostream << "Piece taken: " << moveResult.takenPiece.piece<<'\n';
+            }
+
             ostream << game;
         } else {
             printInvalidMessage(game, "Invalid move!");
