@@ -14,11 +14,13 @@ typedef PieceOptional TakenPiece;
 typedef PieceOptional Position;
 
 class Board {
-    Piece **board = new Piece *[boardSize * boardSize];
+    Piece **array = new Piece *[boardSize * boardSize]{nullptr};
 
     [[nodiscard]] static int toIndex(Column column, Row row);
 
     friend bool test(const Board &board);
+
+    inline void clearArray() const;
 
 public:
 
@@ -28,19 +30,20 @@ public:
 
     Board();
 
-    Board(const Board &board) = delete;
+    Board(const Board &board);
 
-    Board &operator=(Board &other) = delete;
+    Board &operator=(const Board &other);
+
+    Board(Board &&newBoard) noexcept;
 
     Board &operator=(Board &&other) = delete;
-
-    Board(Board &&newBoard);
 
     ~Board();
 
     TakenPiece move(const Move &move);
 
     [[nodiscard]] bool hasPieceAt(Column column, Row row) const;
+
 };
 
 Board createStandardBoard();

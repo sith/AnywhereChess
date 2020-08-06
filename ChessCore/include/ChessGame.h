@@ -11,7 +11,7 @@ class ChessGame {
     const PLAYER &player1;
     const PLAYER &player2;
     const PLAYER *currentPlayer;
-    Board board = createStandardBoard();
+    Board board;
     ChessRuleService chessRuleService;
 
     void changeCurrentPlayer() {
@@ -23,9 +23,18 @@ class ChessGame {
     }
 
 public:
-    ChessGame(PLAYER &player1, PLAYER &player2) : player1{player1}, player2{player2},
-                                                  currentPlayer{&player1}{
+    ChessGame(PLAYER &player1, PLAYER &player2) :
+            player1{player1},
+            player2{player2},
+            currentPlayer{&player1},
+            board{createStandardBoard()} {
     }
+
+    ChessGame(const PLAYER &player1, const PLAYER &player2, Board &board) :
+            player1(player1),
+            player2(player2),
+            board{board} {}
+
 
     [[nodiscard]] const Board &getBoard() const {
         return board;

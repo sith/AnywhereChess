@@ -8,12 +8,12 @@ int countOfAllocatedObjectsInFreeSpace = 0;
 
 void operator delete(void *p) noexcept {
     std::free(p);
-    countOfAllocatedObjectsInFreeSpace++;
+    countOfAllocatedObjectsInFreeSpace--;
 }
 
 void *operator new(size_t size) {
     void *p = malloc(size);
-    countOfAllocatedObjectsInFreeSpace--;
+    countOfAllocatedObjectsInFreeSpace++;
     return p;
 }
 

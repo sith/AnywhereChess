@@ -4,16 +4,19 @@
 #include "Column.h"
 #include <ChessCoreIO.h>
 #include <MemoryManagmentUtils.h>
+#include <boost/format.hpp>
 
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece);
 
 bool test(const Board &board) {
-    return board.board == nullptr;
+    return board.array == nullptr;
 }
 
 const auto isReferenceClean = test;
 
 void assertBasePiecePositions(Board &board);
+
+void assertCopiedPieces(Board &boardA, Board &boardB);
 
 BOOST_AUTO_TEST_CASE(standard_board) {
     Board board = createStandardBoard();
@@ -25,6 +28,38 @@ BOOST_AUTO_TEST_CASE(move_board_instance) {
     Board boardB = std::move(boardA);
     BOOST_TEST(isReferenceClean(boardA));
     assertBasePiecePositions(boardB);
+}
+
+
+BOOST_AUTO_TEST_CASE(copy_board_instance) {
+    Board boardA = createStandardBoard();
+    Board boardB = Board{boardA};
+
+    assertBasePiecePositions(boardA);
+    assertBasePiecePositions(boardB);
+    assertCopiedPieces(boardA, boardB);
+}
+
+BOOST_AUTO_TEST_CASE(copy_assignment_board_instance) {
+    {
+        countOfAllocatedObjectsInFreeSpace = 0;
+        Board boardA = createStandardBoard();
+        Board boardB = createStandardBoard();
+        boardA = boardB;
+
+        assertBasePiecePositions(boardA);
+        assertBasePiecePositions(boardB);
+        assertCopiedPieces(boardA, boardB);
+    }
+
+    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
+}
+
+BOOST_AUTO_TEST_CASE(no_self_copy_assignment_of_the_board) {
+    Board boardA = createStandardBoard();
+    boardA = boardA;
+
+    assertBasePiecePositions(boardA);
 }
 
 BOOST_AUTO_TEST_CASE(move_piece) {
@@ -39,22 +74,23 @@ BOOST_AUTO_TEST_CASE(move_piece) {
 }
 
 BOOST_AUTO_TEST_CASE(take_piece) {
-    Board board;
-    const Piece &whiteRook = Piece{PieceColor::WHITE, PieceType::ROOK};
-    board.set(Column::A, Row::_1, whiteRook);
-    const Piece &blackPond = Piece{PieceColor::BLACK, PieceType::POND};
-    board.set(Column::A, Row::_8, blackPond);
-
     countOfAllocatedObjectsInFreeSpace = 0;
+    {
+        Board board;
+        const Piece &whiteRook = Piece{PieceColor::WHITE, PieceType::ROOK};
+        board.set(Column::A, Row::_1, whiteRook);
+        const Piece &blackPond = Piece{PieceColor::BLACK, PieceType::POND};
+        board.set(Column::A, Row::_8, blackPond);
 
-    TakenPiece takenPiece = board.move(Move{Column::A, Row::_1, Column::A, Row::_8});
-    positionHas(board, Column::A, Row::_8, whiteRook);
-    BOOST_CHECK(!board.get(Column::A, Row::_1).hasPiece);
 
-    BOOST_CHECK(takenPiece.hasPiece);
-    BOOST_CHECK_EQUAL(takenPiece.piece, blackPond);
+        TakenPiece takenPiece = board.move(Move{Column::A, Row::_1, Column::A, Row::_8});
+        positionHas(board, Column::A, Row::_8, whiteRook);
+        BOOST_CHECK(!board.get(Column::A, Row::_1).hasPiece);
 
-    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 1);
+        BOOST_CHECK(takenPiece.hasPiece);
+        BOOST_CHECK_EQUAL(takenPiece.piece, blackPond);
+    }
+    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
 }
 
 BOOST_AUTO_TEST_CASE(has_piece) {
@@ -115,6 +151,26 @@ void assertBasePiecePositions(Board &board) {
         for (const auto &row : emptyRows) {
             const Position &position = board.get(column, row);
             BOOST_TEST(!position.hasPiece);
+        }
+    }
+}
+
+void assertCopiedPieces(Board &boardA, Board &boardB) {
+    for (int i = Column::A; i <= Column::H; i++) {
+        for (int j = Row::_1; j <= Row::_8; ++j) {
+            Column column = (Column) i;
+            Row row = (Row) j;
+
+            Position positionFromBoardA = boardA.get(column, row);
+            Position positionFromBoardB = boardB.get(column, row);
+
+            BOOST_CHECK_MESSAGE(positionFromBoardA.hasPiece == positionFromBoardB.hasPiece,
+                                boost::format("Piece availability matches for %1%%2%") % column % row);
+            if (positionFromBoardA.hasPiece) {
+                BOOST_CHECK_MESSAGE(&positionFromBoardA.piece != &positionFromBoardB.piece,
+                                    boost::format("References must be different for %1%%2%") % column % row);
+            }
+
         }
     }
 }

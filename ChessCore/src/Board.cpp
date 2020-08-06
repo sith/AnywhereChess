@@ -5,7 +5,7 @@
 #include "Column.h"
 
 PieceOptional Board::get(Column column, Row row) const {
-    Piece *piece = board[toIndex(column, row)];
+    Piece *piece = array[toIndex(column, row)];
     if (piece != nullptr) {
         return PieceOptional(*piece);
     } else {
@@ -14,23 +14,27 @@ PieceOptional Board::get(Column column, Row row) const {
 }
 
 void Board::set(Column column, Row row, Piece piece) {
-    board[toIndex(column, row)] = new Piece{piece};
+    array[toIndex(column, row)] = new Piece{piece};
 }
 
 Board::Board() {
+}
+
+void Board::clearArray() const {
     for (int i = 0; i < arraySize; i++) {
-        board[i] = nullptr;
+        if (array[i] != nullptr) {
+            delete array[i];
+            array[i] = nullptr;
+        }
     }
 }
 
 Board::~Board() {
-    if (board == nullptr) {
+    if (array == nullptr) {
         return;
     }
-    for (int i = 0; i < arraySize; i++) {
-        delete board[i];
-    }
-    delete[] board;
+    clearArray();
+    delete[] array;
 }
 
 int Board::toIndex(Column column, Row row) {
@@ -40,22 +44,45 @@ int Board::toIndex(Column column, Row row) {
 TakenPiece Board::move(const Move &move) {
     PieceOptional takenPiece = get(move.endColumn, move.endRow);
 
-    Piece *piece = board[toIndex(move.endColumn, move.endRow)];
+    Piece *piece = array[toIndex(move.endColumn, move.endRow)];
 
     delete piece;
-    board[toIndex(move.endColumn, move.endRow)] = board[toIndex(move.startColumn, move.startRow)];
-    board[toIndex(move.startColumn, move.startRow)] = nullptr;
+    array[toIndex(move.endColumn, move.endRow)] = array[toIndex(move.startColumn, move.startRow)];
+    array[toIndex(move.startColumn, move.startRow)] = nullptr;
 
     return takenPiece;
 }
 
-Board::Board(Board &&newBoard) {
-    board = newBoard.board;
-    newBoard.board = nullptr;
+Board::Board(Board &&newBoard) noexcept {
+    array = newBoard.array;
+    newBoard.array = nullptr;
 }
 
 bool Board::hasPieceAt(Column column, Row row) const {
-    return board[toIndex(column, row)] != nullptr;
+    return array[toIndex(column, row)] != nullptr;
+}
+
+Board::Board(const Board &board) {
+    *this = board;
+}
+
+Board &Board::operator=(const Board &other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    if (other.array == nullptr) {
+        return *this;
+    }
+
+    clearArray();
+
+    for (int i = 0; i < arraySize; i++) {
+        if (other.array[i] != nullptr) {
+            this->array[i] = new Piece{*other.array[i]};
+        }
+    }
+    return *this;
 }
 
 Board createStandardBoard() {
