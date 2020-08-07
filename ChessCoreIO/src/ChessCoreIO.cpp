@@ -3,7 +3,7 @@
 #include <PieceToCharMapper.h>
 
 std::ostream &operator<<(std::ostream &os, const Piece &piece) {
-    os << boost::format("Piece:%1%:%2%") % piece.pieceColor % piece.pieceType;
+    os << boost::format("%1%:%2%") % piece.pieceColor % piece.pieceType;
     return os;
 }
 
