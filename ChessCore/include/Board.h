@@ -11,9 +11,8 @@ constexpr int arraySize = boardSize * boardSize;
 #include "Column.h"
 #include <Types.h>
 
-
 class Board {
-    Piece **array = new Piece *[boardSize * boardSize]{nullptr};
+    Piece **array = new Piece *[arraySize]{nullptr};
 
     [[nodiscard]] static int toIndex(Column column, Row row);
 
@@ -25,7 +24,9 @@ public:
 
     [[nodiscard]] Position get(Column column, Row row) const;
 
-    void set(Column column, Row row, Piece);
+    void set(Column column, Row row, Piece piece);
+
+    void remove(Column column, Row row);
 
     Board();
 

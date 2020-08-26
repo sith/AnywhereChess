@@ -26,6 +26,8 @@ std::ostream &operator<<(std::ostream &os, const PieceType &pieceType);
 
 std::ostream &operator<<(std::ostream &os, const PieceColor &pieceColor);
 
+std::ostream &operator<<(std::ostream &os, const PieceOptional &pieceOptional);
+
 
 
 #endif //ANYWHERECHESS_CHESSCOREIO_H

@@ -69,4 +69,47 @@ BOOST_AUTO_TEST_CASE(player_can_move_piece_only_of_its_own_color) {
 }
 
 
+BOOST_AUTO_TEST_CASE(check) {
+    Board board;
+
+    const Piece &whitePond = Piece{PieceColor::WHITE, PieceType::ROOK};
+    board.set(A, _1, whitePond);
+    const Piece &blackPond = Piece{PieceColor::BLACK, PieceType::KING};
+    board.set(B, _8, blackPond);
+
+    ChessGame<std::string> chessGame{playerA, playerB, board};
+
+    const MoveResult &result = chessGame.move(Move{A, _1, B, _1});
+
+    BOOST_CHECK_EQUAL(result.status, MoveStatus::CHECK);
+
+}
+
+
+BOOST_AUTO_TEST_CASE(wrong_piece) {
+    Board board;
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    ChessGame<std::string> chessGame{playerA, playerB, board};
+    BOOST_CHECK_EQUAL(chessGame.move({A, _3, A, _4}), MoveResult{MoveStatus::ILLEGAL});
+}
+
+
+BOOST_AUTO_TEST_CASE(king_cannot_move_under_check) {
+/*    Board board;
+    std::set<Move> validMoves{};
+
+    board.set(F, _1, Piece{PieceColor::WHITE, PieceType::ROOK});
+    board.set(D, _1, Piece{PieceColor::WHITE, PieceType::ROOK});
+    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::ROOK});
+    board.set(A, _5, Piece{PieceColor::WHITE, PieceType::ROOK});
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KING});
+    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);*/
+
+    BOOST_FAIL("implement test");
+
+}
+
+
 #endif //ANYWHERECHESS_CHESSGAMETEST_H

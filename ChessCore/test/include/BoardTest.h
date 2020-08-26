@@ -100,6 +100,16 @@ BOOST_AUTO_TEST_CASE(has_piece) {
     BOOST_CHECK(!board.hasPieceAt(E, _3));
 }
 
+BOOST_AUTO_TEST_CASE(remove_piece_from_position) {
+    Board board;
+    countOfAllocatedObjectsInFreeSpace = 0;
+    {
+        board.set(A, _1, {WHITE, POND});
+        board.remove(A, _1);
+        BOOST_CHECK(!board.hasPieceAt(A, _1));
+    }
+    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
+}
 
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece) {
     const Position &position = board.get(column, row);

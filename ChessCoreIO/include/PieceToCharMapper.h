@@ -10,7 +10,7 @@
 #include <Column.h>
 #include <Row.h>
 
-char mapPositionToChar(const PieceOptional &position);
+char mapPositionToChar(const PieceOptional &pieceOptional);
 
 char mapPieceToChar(const Piece &piece);
 

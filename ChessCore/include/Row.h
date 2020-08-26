@@ -16,8 +16,5 @@ enum Row {
     _8,
 };
 
-#include <ostream>
-#include "PieceOptional.h"
-#include "Move.h"
 
 #endif //ANYWHERECHESS_ROW_H

@@ -16,9 +16,5 @@ enum Column {
     H,
 };
 
-#include <ostream>
-#include "PieceOptional.h"
-#include "Move.h"
-#include "Row.h"
 
 #endif //ANYWHERECHESS_COLUMN_H

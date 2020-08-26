@@ -3,3 +3,4 @@
 #include "BoardTest.h"
 #include "ChessGameTest.h"
 #include "ChessRuleServiceTest.h"
+#include "PieceOptionalTest.h"

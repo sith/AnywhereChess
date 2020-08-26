@@ -6,7 +6,7 @@
 #define ANYWHERECHESS_PIECETYPE_H
 
 
-enum class PieceType {
+enum PieceType {
     POND,
     ROOK,
     KNIGHT,

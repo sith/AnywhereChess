@@ -14,7 +14,7 @@ class ChessGame {
     Board board;
     ChessRuleService chessRuleService;
 
-    void changeCurrentPlayer() {
+    inline void changeCurrentPlayer() {
         if (*currentPlayer == playerWithLightColoredPieces) {
             currentPlayer = &playerWithDarkColoredPieces;
         } else {
@@ -44,11 +44,24 @@ public:
 
     MoveResult move(const Move &move) {
         PieceColor expectedPieceColor = currentPlayer == &playerWithLightColoredPieces ? PieceColor::WHITE
-                                                                                      : PieceColor::BLACK;
-        if (chessRuleService.isValidMove(move, board, expectedPieceColor)) {
+                                                                                       : PieceColor::BLACK;
+
+        const Position &targetPiece = board.get(move.startColumn, move.startRow);
+
+        if (targetPiece.piece.pieceColor != expectedPieceColor) {
+            return MoveResult(MoveStatus::ILLEGAL);
+        }
+
+        if (chessRuleService.isValidMove(move, board)) {
             TakenPiece takenPiece = board.move(move);
+
+            MoveStatus status = MoveStatus::OK;
+            if (chessRuleService.isCheck(board, opponentPieceColor(expectedPieceColor))) {
+                status = MoveStatus::CHECK;
+            }
+
             changeCurrentPlayer();
-            return MoveResult(MoveStatus::OK, takenPiece);
+            return MoveResult(status, takenPiece);
         } else {
             return MoveResult(MoveStatus::ILLEGAL);
         }

@@ -6,6 +6,8 @@
 #define ANYWHERECHESS_CHESSRULESERVICE_H
 
 
+#include "Square.h"
+
 class ChessRuleService {
     inline bool isValidPondMove(const Move &move, const PieceColor &pieceColor, const Board &board);
 
@@ -33,9 +35,16 @@ class ChessRuleService {
 
     inline bool hasPieceOfDifferentColor(const Move &move, const Board &board);
 
+    inline bool isValidMoveInternal(const Move &move, const Board &board);
+
+    inline Square findKing(const Board &board, PieceColor color);
+
 public:
 
-    bool isValidMove(const Move &move, const Board &board, PieceColor expectedPieceColor);
+    bool isValidMove(const Move &move, const Board &board);
+
+    bool isCheck(const Board &board, PieceColor kingColor);
+
 };
 
 

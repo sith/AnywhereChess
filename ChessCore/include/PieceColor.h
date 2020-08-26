@@ -4,8 +4,18 @@
 
 #ifndef ANYWHERECHESS_PIECECOLOR_H
 #define ANYWHERECHESS_PIECECOLOR_H
-enum class PieceColor {
+enum PieceColor {
     WHITE,
     BLACK
 };
+
+inline PieceColor opponentPieceColor(PieceColor pieceColor) {
+    switch (pieceColor) {
+        case PieceColor::WHITE:
+            return PieceColor::BLACK;
+        case PieceColor::BLACK:
+            return PieceColor::WHITE;
+    }
+}
+
 #endif //ANYWHERECHESS_PIECECOLOR_H

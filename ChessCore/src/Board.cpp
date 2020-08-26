@@ -85,6 +85,11 @@ Board &Board::operator=(const Board &other) {
     return *this;
 }
 
+void Board::remove(Column column, Row row) {
+    delete array[toIndex(column, row)];
+    array[toIndex(column, row)] = nullptr;
+}
+
 Board createStandardBoard() {
     Board board{};
 

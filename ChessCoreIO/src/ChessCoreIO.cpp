@@ -17,8 +17,8 @@ std::ostream &operator<<(std::ostream &os, const Board &board) {
         char rowNumber = (char) (*row + '1');
         os << rowNumber;
         for (auto column = std::begin(columns); column != std::end(columns); ++column) {
-            const Position &position = board.get(*column, *row);
-            os << mapPositionToChar(position);
+            const PieceOptional &pieceOptional = board.get(*column, *row);
+            os << mapPositionToChar(pieceOptional);
         }
         os << rowNumber << '\n';
     }
@@ -152,5 +152,14 @@ std::ostream &operator<<(std::ostream &os, const PieceColor &pieceColor) {
             os << "black";
             break;
     }
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const PieceOptional &pieceOptional) {
+    os << "PieceOptional[";
+    if (pieceOptional.hasPiece) {
+        os << pieceOptional.piece;
+    }
+    os << "]";
     return os;
 }
