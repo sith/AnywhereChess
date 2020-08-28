@@ -46,8 +46,8 @@ BOOST_AUTO_TEST_CASE(return_taken_piece) {
 
     const MoveResult &result = chessGame.move(Move{A, _1, B, _2});
     BOOST_CHECK_EQUAL(result.status, MoveStatus::OK);
-    BOOST_CHECK_MESSAGE(result.takenPiece.hasPiece, "Taken piece must exist");
-    BOOST_CHECK_EQUAL(result.takenPiece.piece, blackPond);
+    BOOST_CHECK_MESSAGE(result.takenPiece.hasValue, "Taken value must exist");
+    BOOST_CHECK_EQUAL(result.takenPiece.value, blackPond);
 }
 
 BOOST_AUTO_TEST_CASE(player_can_move_piece_only_of_its_own_color) {
@@ -93,23 +93,5 @@ BOOST_AUTO_TEST_CASE(wrong_piece) {
     ChessGame<std::string> chessGame{playerA, playerB, board};
     BOOST_CHECK_EQUAL(chessGame.move({A, _3, A, _4}), MoveResult{MoveStatus::ILLEGAL});
 }
-
-
-BOOST_AUTO_TEST_CASE(king_cannot_move_under_check) {
-/*    Board board;
-    std::set<Move> validMoves{};
-
-    board.set(F, _1, Piece{PieceColor::WHITE, PieceType::ROOK});
-    board.set(D, _1, Piece{PieceColor::WHITE, PieceType::ROOK});
-    board.set(A, _3, Piece{PieceColor::WHITE, PieceType::ROOK});
-    board.set(A, _5, Piece{PieceColor::WHITE, PieceType::ROOK});
-
-    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::KING});
-    assertMoves(board, validMoves, E, _4, PieceColor::BLACK);*/
-
-    BOOST_FAIL("implement test");
-
-}
-
 
 #endif //ANYWHERECHESS_CHESSGAMETEST_H

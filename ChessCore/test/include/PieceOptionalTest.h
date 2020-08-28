@@ -9,16 +9,14 @@
 
 BOOST_AUTO_TEST_CASE(equal) {
 
-    BOOST_CHECK_EQUAL(PieceOptional{}, PieceOptional{});
+    BOOST_CHECK_EQUAL(Optional<Piece>{}, Optional<Piece>{});
 
-    PieceOptional blackPond1{{BLACK, POND}};
-    PieceOptional blackPond2{{BLACK, POND}};
+    Optional<Piece> blackPond1{{BLACK, POND}};
+    Optional<Piece> blackPond2{{BLACK, POND}};
     BOOST_CHECK_EQUAL(blackPond2, blackPond1);
 
-    PieceOptional whitePond{{WHITE, POND}};
+    Optional<Piece> whitePond{{WHITE, POND}};
     BOOST_CHECK_NE(blackPond1, whitePond);
-
-
 }
 
 

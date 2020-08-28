@@ -1,4 +1,5 @@
 #include <Piece.h>
+#include <Types.h>
 #include "PieceToCharMapper.h"
 
 char mapWhitePiece(const Piece &piece);
@@ -48,9 +49,9 @@ char mapWhitePiece(const Piece &piece) {
     }
 }
 
-char mapPositionToChar(const PieceOptional &pieceOptional) {
-    if (pieceOptional.hasPiece) {
-        return mapPieceToChar(pieceOptional.piece);
+char mapPositionToChar(const Position &pieceOptional) {
+    if (pieceOptional.hasValue) {
+        return mapPieceToChar(pieceOptional.value);
     } else {
         return '.';
     }

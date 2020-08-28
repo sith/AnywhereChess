@@ -5,7 +5,7 @@ constexpr int boardSize = 8;
 constexpr int arraySize = boardSize * boardSize;
 
 #include <ostream>
-#include "PieceOptional.h"
+#include "Optional.h"
 #include "Move.h"
 #include "Row.h"
 #include "Column.h"
@@ -43,6 +43,10 @@ public:
     TakenPiece move(const Move &move);
 
     [[nodiscard]] bool hasPieceAt(Column column, Row row) const;
+
+    bool operator==(const Board &rhs) const;
+
+    bool operator!=(const Board &rhs) const;
 
 };
 

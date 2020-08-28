@@ -62,8 +62,8 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
         switch (moveResult.status) {
 
             case MoveStatus::OK:
-                if (moveResult.takenPiece.hasPiece) {
-                    ostream << "Piece taken: " << moveResult.takenPiece.piece << '\n';
+                if (moveResult.takenPiece.hasValue) {
+                    ostream << "Piece taken: " << moveResult.takenPiece.value << '\n';
                 }
 
                 ostream << game;

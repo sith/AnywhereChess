@@ -13,6 +13,8 @@ struct Square {
     const Row row;
 
     Square(const Column column, const Row row) : column(column), row(row) {}
+
+    Square() : column{A}, row{_1} {}
 };
 
 #endif //ANYWHERECHESS_SQUARE_H

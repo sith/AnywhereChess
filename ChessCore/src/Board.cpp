@@ -1,15 +1,14 @@
-#include <PieceOptional.h>
 #include <Board.h>
 #include <iostream>
 #include "Row.h"
 #include "Column.h"
 
-PieceOptional Board::get(Column column, Row row) const {
+Position Board::get(Column column, Row row) const {
     Piece *piece = array[toIndex(column, row)];
     if (piece != nullptr) {
-        return PieceOptional(*piece);
+        return Position(*piece);
     } else {
-        return PieceOptional();
+        return Position ();
     }
 }
 
@@ -42,7 +41,7 @@ int Board::toIndex(Column column, Row row) {
 }
 
 TakenPiece Board::move(const Move &move) {
-    PieceOptional takenPiece = get(move.endColumn, move.endRow);
+    TakenPiece takenPiece = get(move.endColumn, move.endRow);
 
     Piece *piece = array[toIndex(move.endColumn, move.endRow)];
 
@@ -88,6 +87,30 @@ Board &Board::operator=(const Board &other) {
 void Board::remove(Column column, Row row) {
     delete array[toIndex(column, row)];
     array[toIndex(column, row)] = nullptr;
+}
+
+bool Board::operator==(const Board &rhs) const {
+    for (int i = 0; i < arraySize; i++) {
+        Piece *lhsPiecePointer = array[i];
+        Piece *rhsPiecePointer = rhs.array[i];
+
+        if (lhsPiecePointer == nullptr && rhsPiecePointer == nullptr) {
+            continue;
+        }
+
+        if (lhsPiecePointer == nullptr) {
+            return false;
+        }
+
+        if (*lhsPiecePointer != *rhsPiecePointer) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Board::operator!=(const Board &rhs) const {
+    return !(rhs == *this);
 }
 
 Board createStandardBoard() {

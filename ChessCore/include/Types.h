@@ -2,8 +2,8 @@
 #ifndef ANYWHERECHESS_TYPES_H
 #define ANYWHERECHESS_TYPES_H
 
-#include <PieceOptional.h>
+#include <Optional.h>
 
-typedef PieceOptional TakenPiece;
-typedef PieceOptional Position;
+typedef Optional<Piece> TakenPiece;
+typedef Optional<Piece> Position;
 #endif //ANYWHERECHESS_TYPES_H

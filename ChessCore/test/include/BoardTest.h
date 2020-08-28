@@ -69,8 +69,8 @@ BOOST_AUTO_TEST_CASE(move_piece) {
 
     const TakenPiece &takenPiece = board.move(Move{Column::A, Row::_1, Column::H, Row::_8});
     positionHas(board, Column::H, Row::_8, expectedPiece);
-    BOOST_CHECK(!board.get(Column::A, Row::_1).hasPiece);
-    BOOST_CHECK(!takenPiece.hasPiece);
+    BOOST_CHECK(!board.get(Column::A, Row::_1).hasValue);
+    BOOST_CHECK(!takenPiece.hasValue);
 }
 
 BOOST_AUTO_TEST_CASE(take_piece) {
@@ -85,10 +85,10 @@ BOOST_AUTO_TEST_CASE(take_piece) {
 
         TakenPiece takenPiece = board.move(Move{Column::A, Row::_1, Column::A, Row::_8});
         positionHas(board, Column::A, Row::_8, whiteRook);
-        BOOST_CHECK(!board.get(Column::A, Row::_1).hasPiece);
+        BOOST_CHECK(!board.get(Column::A, Row::_1).hasValue);
 
-        BOOST_CHECK(takenPiece.hasPiece);
-        BOOST_CHECK_EQUAL(takenPiece.piece, blackPond);
+        BOOST_CHECK(takenPiece.hasValue);
+        BOOST_CHECK_EQUAL(takenPiece.value, blackPond);
     }
     BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
 }
@@ -111,10 +111,25 @@ BOOST_AUTO_TEST_CASE(remove_piece_from_position) {
     BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
 }
 
+BOOST_AUTO_TEST_CASE(boards_are_equal) {
+    Board boardA = createStandardBoard();
+    Board boardB = createStandardBoard();
+
+    BOOST_CHECK_EQUAL(boardA, boardB);
+}
+
+BOOST_AUTO_TEST_CASE(boards_are_not_equal) {
+    Board boardA = createStandardBoard();
+    Board boardB;
+
+    BOOST_CHECK_NE(boardA, boardB);
+}
+
+
 void positionHas(Board &board, Column column, Row row, const Piece &expectedPiece) {
     const Position &position = board.get(column, row);
-    BOOST_TEST(position.hasPiece);
-    BOOST_CHECK_EQUAL(position.piece, expectedPiece);
+    BOOST_TEST(position.hasValue);
+    BOOST_CHECK_EQUAL(position.value, expectedPiece);
 }
 
 void assertBasePiecePositions(Board &board) {
@@ -160,7 +175,7 @@ void assertBasePiecePositions(Board &board) {
     for (const auto &column : allColumns) {
         for (const auto &row : emptyRows) {
             const Position &position = board.get(column, row);
-            BOOST_TEST(!position.hasPiece);
+            BOOST_TEST(!position.hasValue);
         }
     }
 }
@@ -174,10 +189,10 @@ void assertCopiedPieces(Board &boardA, Board &boardB) {
             Position positionFromBoardA = boardA.get(column, row);
             Position positionFromBoardB = boardB.get(column, row);
 
-            BOOST_CHECK_MESSAGE(positionFromBoardA.hasPiece == positionFromBoardB.hasPiece,
+            BOOST_CHECK_MESSAGE(positionFromBoardA.hasValue == positionFromBoardB.hasValue,
                                 boost::format("Piece availability matches for %1%%2%") % column % row);
-            if (positionFromBoardA.hasPiece) {
-                BOOST_CHECK_MESSAGE(&positionFromBoardA.piece != &positionFromBoardB.piece,
+            if (positionFromBoardA.hasValue) {
+                BOOST_CHECK_MESSAGE(&positionFromBoardA.value != &positionFromBoardB.value,
                                     boost::format("References must be different for %1%%2%") % column % row);
             }
 

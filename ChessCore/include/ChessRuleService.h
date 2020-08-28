@@ -37,7 +37,7 @@ class ChessRuleService {
 
     inline bool isValidMoveInternal(const Move &move, const Board &board);
 
-    inline Square findKing(const Board &board, PieceColor color);
+    inline Optional<Square> findKing(const Board &board, PieceColor color);
 
 public:
 

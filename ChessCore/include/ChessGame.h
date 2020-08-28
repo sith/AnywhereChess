@@ -48,7 +48,7 @@ public:
 
         const Position &targetPiece = board.get(move.startColumn, move.startRow);
 
-        if (targetPiece.piece.pieceColor != expectedPieceColor) {
+        if (targetPiece.value.pieceColor != expectedPieceColor) {
             return MoveResult(MoveStatus::ILLEGAL);
         }
 
