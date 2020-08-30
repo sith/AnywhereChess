@@ -101,6 +101,8 @@ BOOST_AUTO_TEST_CASE(check_and_mate) {
 
     BOOST_CHECK_EQUAL(result.status, MoveStatus::CHECK_MATE);
     BOOST_CHECK_EQUAL(playerA, chessGame.getCurrentPlayer());
+
+    BOOST_CHECK_EQUAL(chessGame.move({H, _1, H, _2}).status,MoveStatus::NO_MOVE_GAME_OVER);
 }
 
 

@@ -13,6 +13,7 @@ class ChessGame {
     const PLAYER *currentPlayer;
     Board board;
     ChessRuleService chessRuleService;
+    bool gameOver = false;
 
     inline void changeCurrentPlayer() {
         if (*currentPlayer == playerWithLightColoredPieces) {
@@ -43,6 +44,10 @@ public:
     }
 
     MoveResult move(const Move &move) {
+        if (gameOver) {
+            return MoveResult{MoveStatus::NO_MOVE_GAME_OVER};
+        }
+
         PieceColor expectedPieceColor = currentPlayer == &playerWithLightColoredPieces ? PieceColor::WHITE
                                                                                        : PieceColor::BLACK;
 
@@ -59,6 +64,7 @@ public:
             PieceColor kingColor = opponentPieceColor(expectedPieceColor);
             if (chessRuleService.isCheck(board, kingColor)) {
                 if (chessRuleService.isMate(board, kingColor)) {
+                    gameOver = true;
                     return MoveResult(MoveStatus::CHECK_MATE, takenPiece);
                 }
 
