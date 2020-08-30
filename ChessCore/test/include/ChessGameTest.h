@@ -82,7 +82,25 @@ BOOST_AUTO_TEST_CASE(check) {
     const MoveResult &result = chessGame.move(Move{A, _1, B, _1});
 
     BOOST_CHECK_EQUAL(result.status, MoveStatus::CHECK);
+}
 
+BOOST_AUTO_TEST_CASE(check_and_mate) {
+    Board board;
+
+    const Piece &whiteRook = Piece{PieceColor::WHITE, PieceType::ROOK};
+    board.set(H, _8, whiteRook);
+    const Piece &whiteKing = Piece{PieceColor::WHITE, PieceType::KING};
+    board.set(A, _3, whiteKing);
+
+    const Piece &blackKing = Piece{PieceColor::BLACK, PieceType::KING};
+    board.set(A, _1, blackKing);
+
+    ChessGame<std::string> chessGame{playerA, playerB, board};
+
+    const MoveResult &result = chessGame.move(Move{H, _8, H, _1});
+
+    BOOST_CHECK_EQUAL(result.status, MoveStatus::CHECK_MATE);
+    BOOST_CHECK_EQUAL(playerA, chessGame.getCurrentPlayer());
 }
 
 

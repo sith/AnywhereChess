@@ -791,6 +791,45 @@ BOOST_AUTO_TEST_CASE(king_cannot_move_under_check) {
     assertMoves(board, {}, E, _4);
 }
 
+BOOST_AUTO_TEST_CASE(check_and_mate_) {
+    Board board;
+    board.set(D, _5, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(E, _5, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(F, _5, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(F, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(F, _3, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(E, _3, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(D, _3, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(D, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
+
+    board.set(E, _4, Piece{PieceColor::WHITE, PieceType::KING});
+
+    BOOST_CHECK_MESSAGE(chessRuleService.isMate(board, PieceColor::WHITE), "Check-Mate");
+}
+
+BOOST_AUTO_TEST_CASE(check_and_mate_in_corners) {
+    Board board;
+    board.set(B, _2, Piece{PieceColor::BLACK, PieceType::QUEEN});
+    board.set(G, _7, Piece{PieceColor::BLACK, PieceType::QUEEN});
+
+
+    board.set(A, _1, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK_MESSAGE(chessRuleService.isMate(board, PieceColor::WHITE), "Check-Mate");
+    board.remove(A, _1);
+
+    board.set(A, _8, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK_MESSAGE(chessRuleService.isMate(board, PieceColor::WHITE), "Check-Mate");
+    board.remove(A, _8);
+
+    board.set(H, _8, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK_MESSAGE(chessRuleService.isMate(board, PieceColor::WHITE), "Check-Mate");
+    board.remove(H, _8);
+
+    board.set(H, _1, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK_MESSAGE(chessRuleService.isMate(board, PieceColor::WHITE), "Check-Mate");
+    board.remove(H, _1);
+}
+
 
 void assertMoves(Board &board, std::set<Move> validMoves, Column startColumn, Row startRow) {
 

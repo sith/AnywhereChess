@@ -21,7 +21,7 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
 
 bool ChessRuleService::isCheck(const Board &board, const PieceColor kingColor) {
     Optional<Square> king = findKing(board, kingColor);
-//TODO this is funky!
+
     if (!king.hasValue) {
         return false;
     }
@@ -243,4 +243,63 @@ Optional<Square> ChessRuleService::findKing(const Board &board, PieceColor color
         }
     }
     return Optional<Square>{};
+}
+
+bool ChessRuleService::isMate(const Board &board, PieceColor kingColor) {
+    Optional<Square> king = findKing(board, kingColor);
+
+    const Square &square = king();
+    Column startColumn = findStartColumnForKingMoveCheck(square);
+    Column endColumn = findEndColumnForKingMove(square);
+    Row startRow = findStartRowForKingMoveCheck(square);
+    Row endRow = findEndRowForKingMoveCheck(square);
+
+    for (int i = startRow; i <= endRow; i++) {
+        for (int j = startColumn; j <= endColumn; j++) {
+            auto row = (Row) i;
+            auto column = (Column) j;
+
+            if (isValidMove({square.column, square.row, column, row}, board)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+Row ChessRuleService::findEndRowForKingMoveCheck(const Square &square) const {
+    Row endRow;
+    if (square.row == _8) {
+        endRow = _8;
+    } else {
+        endRow = (Row) (square.row + 1);
+    }
+    return endRow;
+}
+
+Row ChessRuleService::findStartRowForKingMoveCheck(const Square &square) const {
+    Row startRow;
+    if (square.row == _1) {
+        startRow = _1;
+    } else {
+        startRow = (Row) (square.row - 1);
+    }
+    return startRow;
+}
+
+Column ChessRuleService::findEndColumnForKingMove(const Square &square) const {
+    if (square.column == H) {
+        return H;
+    } else {
+        return (Column) (square.column + 1);
+    }
+}
+
+Column ChessRuleService::findStartColumnForKingMoveCheck(const Square &square) const {
+    if (square.column == A) {
+        return A;
+    } else {
+        return (Column) (square.column - 1);
+    }
 }

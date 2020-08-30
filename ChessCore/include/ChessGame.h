@@ -56,7 +56,12 @@ public:
             TakenPiece takenPiece = board.move(move);
 
             MoveStatus status = MoveStatus::OK;
-            if (chessRuleService.isCheck(board, opponentPieceColor(expectedPieceColor))) {
+            PieceColor kingColor = opponentPieceColor(expectedPieceColor);
+            if (chessRuleService.isCheck(board, kingColor)) {
+                if (chessRuleService.isMate(board, kingColor)) {
+                    return MoveResult(MoveStatus::CHECK_MATE, takenPiece);
+                }
+
                 status = MoveStatus::CHECK;
             }
 

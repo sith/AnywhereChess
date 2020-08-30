@@ -76,7 +76,7 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
                 break;
             case MoveStatus::CHECK_MATE:
                 ostream << "Check and Mate!\n";
-                ostream << "Winner: " << game.getCurrentPlayer() << game;
+                ostream << "Winner: " << game.getCurrentPlayer() << "\n";
                 return;
         }
     }

@@ -39,12 +39,21 @@ class ChessRuleService {
 
     inline Optional<Square> findKing(const Board &board, PieceColor color);
 
+    inline Column findStartColumnForKingMoveCheck(const Square &square) const;
+
+    inline Column findEndColumnForKingMove(const Square &square) const;
+
 public:
 
     bool isValidMove(const Move &move, const Board &board);
 
     bool isCheck(const Board &board, PieceColor kingColor);
 
+    bool isMate(const Board &board, PieceColor kingColor);
+
+    Row findStartRowForKingMoveCheck(const Square &square) const;
+
+    Row findEndRowForKingMoveCheck(const Square &square) const;
 };
 
 
