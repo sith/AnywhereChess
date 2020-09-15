@@ -7,7 +7,6 @@
 #define BOOST_TEST_MODULE CHESS_CMD_TESTS
 
 #include "ChessCmd_AcceptanceTest.h"
-#include "../../ChessCoreIO/test/include/PieceToCharMapperTest.h"
 #include "GameControllerTest.h"
 
 

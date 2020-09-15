@@ -7,6 +7,7 @@
 #include <ChessCoreIO.h>
 #include <Move.h>
 #include <CmdMove.h>
+#include <RectangleBoardRange.h>
 
 BOOST_AUTO_TEST_CASE(displays_provided_board_with_next_user) {
     std::stringstream stringstream;
@@ -101,25 +102,35 @@ BOOST_AUTO_TEST_CASE(read_move) {
 }
 
 BOOST_AUTO_TEST_CASE(read_all_valid_moves) {
-    for (char startColumn = 'a'; startColumn <= 'h'; startColumn++) {
-        for (char endColumn = 'a'; endColumn <= 'h'; endColumn++) {
-            for (char startRow = '1'; startRow <= '8'; startRow++) {
-                for (char endRow = '1'; endRow <= '8'; endRow++) {
-                    std::stringstream isstream;
-                    isstream << startColumn << startRow << endColumn << endRow << '\n';
-                    std::string expected = isstream.str();
 
-                    CmdMove cmdMove;
-                    isstream >> cmdMove;
+    RectangleBoardRange startIterator;
+    RectangleBoardRange endIterator;
 
-                    BOOST_CHECK(cmdMove.validFormat);
-                    /*std::stringstream actualMove;
+    while (startIterator.hasNext()) {
+        const Square &startSquare = startIterator.next();
+        while (endIterator.hasNext()) {
+            const Square &endSquare = endIterator.next();
+            std::stringstream isstream;
+            isstream << startSquare.column << startSquare.row << endSquare.column << endSquare.row << '\n';
 
-                    BOOST_CHECK_EQUAL(cmdMove.move, expected);*/
-                }
-            }
+            CmdMove cmdMove;
+            isstream >> cmdMove;
+
+            BOOST_CHECK(cmdMove.validFormat);
+            const Move &expectedMove = Move{startSquare, endSquare};
+            BOOST_CHECK_EQUAL(cmdMove.move, expectedMove);
         }
     }
+}
+
+BOOST_AUTO_TEST_CASE(give_up_move) {
+    std::stringstream isstream;
+    isstream << giveUpString << '\n';
+
+    CmdMove cmdMove;
+    isstream >> cmdMove;
+    BOOST_CHECK(cmdMove.validFormat);
+    BOOST_CHECK(cmdMove.giveUp);
 }
 
 

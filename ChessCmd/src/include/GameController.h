@@ -2,9 +2,11 @@
 #define ANYWHERECHESS_GAMECONTROLLER_H
 
 #include <ChessGame.h>
+
 #include <PieceToCharMapper.h>
 #include <CmdMove.h>
 
+static const std::string giveUpString{"give up"};
 
 
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove);

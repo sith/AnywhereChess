@@ -57,15 +57,18 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
             continue;
         }
 
+        if (cmdMove.giveUp) {
+            ostream << "Player " << game.getCurrentPlayer() << " gave up!\n";
+            return;
+        }
+
         const MoveResult &moveResult = game.move(cmdMove.move);
 
         switch (moveResult.status) {
-
             case MoveStatus::OK:
                 if (moveResult.takenPiece.hasValue) {
                     ostream << "Piece taken: " << moveResult.takenPiece.value << '\n';
                 }
-
                 ostream << game;
                 break;
             case MoveStatus::ILLEGAL:
@@ -77,6 +80,11 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
             case MoveStatus::CHECK_MATE:
                 ostream << "Check and Mate!\n";
                 ostream << "Winner: " << game.getCurrentPlayer() << "\n";
+                return;
+            case MoveStatus::NO_MOVE_GAME_OVER:
+                return;
+            case MoveStatus::STALE_MATE:
+                ostream << "Stale Mate!\n";
                 return;
         }
     }

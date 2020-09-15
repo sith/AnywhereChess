@@ -9,6 +9,12 @@ std::istream &operator>>(std::istream &is, CmdMove &cmdMove) {
     std::string line;
     std::getline(is, line);
 
+    if (line == giveUpString) {
+        cmdMove.giveUp = true;
+        cmdMove.validFormat = true;
+        return is;
+    }
+
     char &startColumnCharacter = line.at(0);
     char &startRowCharacter = line.at(1);
     char &endColumnCharacter = line.at(2);
