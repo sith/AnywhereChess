@@ -17,4 +17,25 @@ enum Column {
 };
 
 
+inline Column operator+(Column column, int value) {
+    int result = (int) column + value;
+    if (result > 7) {
+        return H;
+    }
+
+    return (Column) result;
+}
+
+inline Column operator-(Column column, int value) {
+    int result = (int) column - value;
+    if (result < 0) {
+        return A;
+    }
+    return (Column) result;
+}
+
+inline int operator-(Column lhs, Column rhs) {
+    return (int) lhs - (int) rhs;
+}
+
 #endif //ANYWHERECHESS_COLUMN_H

@@ -50,32 +50,36 @@ public:
 
         PieceColor expectedPieceColor = currentPlayer == &playerWithLightColoredPieces ? PieceColor::WHITE
                                                                                        : PieceColor::BLACK;
-
         const Position &targetPiece = board.get(move.startColumn, move.startRow);
 
-        if (targetPiece.value.pieceColor != expectedPieceColor) {
+        if (!targetPiece.hasValue || targetPiece.value.pieceColor != expectedPieceColor) {
             return MoveResult(MoveStatus::ILLEGAL);
         }
 
-        if (chessRuleService.isValidMove(move, board)) {
-            TakenPiece takenPiece = board.move(move);
+        if (!chessRuleService.isValidMove(move, board)) {
+            return MoveResult(MoveStatus::ILLEGAL);
+        }
 
-            MoveStatus status = MoveStatus::OK;
-            PieceColor kingColor = opponentPieceColor(expectedPieceColor);
-            if (chessRuleService.isCheck(board, kingColor)) {
-                if (chessRuleService.isMate(board, kingColor)) {
-                    gameOver = true;
-                    return MoveResult(MoveStatus::CHECK_MATE, takenPiece);
-                }
+        TakenPiece takenPiece = board.move(move);
 
-                status = MoveStatus::CHECK;
+        MoveStatus status = MoveStatus::OK;
+        PieceColor kingColor = opponentPieceColor(expectedPieceColor);
+        if (chessRuleService.isCheck(board, kingColor)) {
+            if (chessRuleService.isMate(board, kingColor)) {
+                gameOver = true;
+                return MoveResult(MoveStatus::CHECK_MATE, takenPiece);
             }
-
-            changeCurrentPlayer();
-            return MoveResult(status, takenPiece);
-        } else {
-            return MoveResult(MoveStatus::ILLEGAL);
+            status = MoveStatus::CHECK;
         }
+
+        if (chessRuleService.isStaleMate(board, kingColor)) {
+            gameOver = true;
+            return MoveResult{MoveStatus::STALE_MATE};
+        }
+
+        changeCurrentPlayer();
+        return MoveResult(status, takenPiece);
+
     }
 };
 

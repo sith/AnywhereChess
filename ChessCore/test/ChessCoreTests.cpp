@@ -4,3 +4,9 @@
 #include "ChessGameTest.h"
 #include "ChessRuleServiceTest.h"
 #include "PieceOptionalTest.h"
+#include "RectangleBoardRangeTest.h"
+#include "UtilsTest.h"
+#include "CircularBoardRangeTest.h"
+#include "ColumnTest.h"
+#include "RowTest.h"
+

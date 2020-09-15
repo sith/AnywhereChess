@@ -62,3 +62,9 @@ bool Move::isDiagonalOfSize(int size) const {
     return isDiagonal() && utils::abs(startRow - endRow) == size;
 }
 
+Move::Move(Square startSquare, Square endSquare) :
+        startColumn{startSquare.column},
+        startRow{startSquare.row},
+        endColumn{endSquare.column},
+        endRow{endSquare.row} {
+}

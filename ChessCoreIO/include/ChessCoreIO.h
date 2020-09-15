@@ -28,5 +28,6 @@ std::ostream &operator<<(std::ostream &os, const PieceColor &pieceColor);
 
 std::ostream &operator<<(std::ostream &os, const Optional<Piece> &pieceOptional);
 
+std::ostream &operator<<(std::ostream &os, const Square square);
 
 #endif //ANYWHERECHESS_CHESSCOREIO_H

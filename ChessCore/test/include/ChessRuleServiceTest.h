@@ -831,6 +831,41 @@ BOOST_AUTO_TEST_CASE(check_and_mate_in_corners) {
 }
 
 
+BOOST_AUTO_TEST_CASE(stale_mate_) {
+    Board board;
+    board.set(C, _2, Piece{PieceColor::BLACK, PieceType::QUEEN});
+
+    board.set(E, _4, Piece{PieceColor::BLACK, PieceType::POND});
+    board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
+
+
+    board.set(A, _1, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK_MESSAGE(chessRuleService.isStaleMate(board, PieceColor::WHITE), "Stale Mate");
+}
+
+BOOST_AUTO_TEST_CASE(no_stale_mate_if_there_is_another_piece_that_can_make_move) {
+    Board board;
+    board.set(C, _2, Piece{PieceColor::BLACK, PieceType::QUEEN});
+
+    board.set(E, _3, Piece{PieceColor::WHITE, PieceType::POND});
+
+    board.set(A, _1, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK_MESSAGE(!chessRuleService.isStaleMate(board, PieceColor::WHITE), "Not Stale Mate");
+}
+
+BOOST_AUTO_TEST_CASE(stale_mate_if_cannot_move_piece_because_of_check) {
+    Board board;
+    board.set(D, _4, Piece{PieceColor::BLACK, PieceType::QUEEN});
+
+    board.set(A, _3, Piece{PieceColor::BLACK, PieceType::POND});
+    board.set(A, _2, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(B, _1, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(B, _2, Piece{PieceColor::WHITE, PieceType::POND});
+    board.set(A, _1, Piece{PieceColor::WHITE, PieceType::KING});
+    BOOST_CHECK_MESSAGE(chessRuleService.isStaleMate(board, PieceColor::WHITE), "Stale Mate");
+}
+
+
 void assertMoves(Board &board, std::set<Move> validMoves, Column startColumn, Row startRow) {
 
     for (int i = Row::_1; i <= Row::_8; i++) {

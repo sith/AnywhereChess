@@ -1,15 +1,14 @@
-//
-// Created by Fedorov, Alex on 7/15/20.
-//
+#include "ChessRuleService.h"
 
 #include <Move.h>
 #include <Board.h>
-#include "ChessRuleService.h"
 #include <utils.h>
 #include <Square.h>
 #include <Optional.h>
+#include <RectangleBoardRange.h>
+#include <CircularBoardRange.h>
 
-bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
+bool ChessRuleService::isValidMove(const Move &move, const Board &board) const {
     if (isValidMoveInternal(move, board)) {
         Board tmpBoard = board;
         tmpBoard.move(move);
@@ -19,29 +18,27 @@ bool ChessRuleService::isValidMove(const Move &move, const Board &board) {
     return false;
 }
 
-bool ChessRuleService::isCheck(const Board &board, const PieceColor kingColor) {
+bool ChessRuleService::isCheck(const Board &board, const PieceColor kingColor) const {
     Optional<Square> king = findKing(board, kingColor);
 
     if (!king.hasValue) {
         return false;
     }
 
-    for (int i = Row::_1; i <= Row::_8; i++) {
-        for (int j = Column::A; j <= Column::H; j++) {
-            auto row = (Row) i;
-            auto column = (Column) j;
+    RectangleBoardRange rectangleBoardRange;
 
-            const Move &checkMove = Move{column, row, king().column, king().row};
-            if (isValidMoveInternal(checkMove, board)) {
-                return true;
-            }
+    while (rectangleBoardRange.hasNext()) {
+        const Square &square = rectangleBoardRange.next();
+        const Move &checkMove = Move{square.column, square.row, king().column, king().row};
+        if (isValidMoveInternal(checkMove, board)) {
+            return true;
         }
     }
     return false;
 }
 
 
-bool ChessRuleService::isValidMoveInternal(const Move &move, const Board &board) {
+bool ChessRuleService::isValidMoveInternal(const Move &move, const Board &board) const {
     const Position &startPosition = board.get(move.startColumn, move.startRow);
 
     if (!startPosition.hasValue) {
@@ -70,7 +67,7 @@ bool ChessRuleService::isValidMoveInternal(const Move &move, const Board &board)
     }
 }
 
-bool ChessRuleService::isValidPondMove(const Move &move, const PieceColor &pieceColor, const Board &board) {
+bool ChessRuleService::isValidPondMove(const Move &move, const PieceColor &pieceColor, const Board &board) const {
     bool verticalMove = isVerticalMove(move, pieceColor);
 
     const Position &position = board.get(move.endColumn, move.endRow);
@@ -99,7 +96,7 @@ bool ChessRuleService::isValidPondMove(const Move &move, const PieceColor &piece
     return false;
 }
 
-bool ChessRuleService::isVerticalMove(const Move &move, const PieceColor &pieceColor) {
+bool ChessRuleService::isVerticalMove(const Move &move, const PieceColor &pieceColor) const {
 
     if (!move.isVerticalMove()) {
         return false;
@@ -116,7 +113,7 @@ bool ChessRuleService::isVerticalMove(const Move &move, const PieceColor &pieceC
     return properMoveLength;
 }
 
-bool ChessRuleService::isValidRookMove(const Move &move, const Board &board) {
+bool ChessRuleService::isValidRookMove(const Move &move, const Board &board) const {
     if ((isProperVerticalMove(move, board) || isProperHorizontalMove(move, board))
         && (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board))) {
         return true;
@@ -124,7 +121,7 @@ bool ChessRuleService::isValidRookMove(const Move &move, const Board &board) {
     return false;
 }
 
-bool ChessRuleService::isProperHorizontalMove(const Move &move, const Board &board) {
+bool ChessRuleService::isProperHorizontalMove(const Move &move, const Board &board) const {
     return (move.isHorizontal() &&
             noJumpOverPiecesHorizontally(
                     move.startRow,
@@ -133,7 +130,7 @@ bool ChessRuleService::isProperHorizontalMove(const Move &move, const Board &boa
                     board));
 }
 
-bool ChessRuleService::isProperVerticalMove(const Move &move, const Board &board) {
+bool ChessRuleService::isProperVerticalMove(const Move &move, const Board &board) const {
     return (move.isVerticalMove() &&
             noJumpOverPiecesVertically(
                     move.startColumn,
@@ -142,7 +139,7 @@ bool ChessRuleService::isProperVerticalMove(const Move &move, const Board &board
                     board));
 }
 
-bool ChessRuleService::noJumpOverPiecesVertically(Column column, Row startRow, Row endRow, const Board &board) {
+bool ChessRuleService::noJumpOverPiecesVertically(Column column, Row startRow, Row endRow, const Board &board) const {
     int delta = startRow <= endRow ? 1 : -1;
     for (int i = startRow + delta; i != endRow; i = i + delta) {
         Row row = (Row) i;
@@ -153,7 +150,8 @@ bool ChessRuleService::noJumpOverPiecesVertically(Column column, Row startRow, R
     return true;
 }
 
-bool ChessRuleService::noJumpOverPiecesHorizontally(Row row, Column startColumn, Column endColumn, const Board &board) {
+bool ChessRuleService::noJumpOverPiecesHorizontally(Row row, Column startColumn, Column endColumn,
+                                                    const Board &board) const {
     int delta = startColumn <= endColumn ? 1 : -1;
     for (int i = startColumn + delta; i != endColumn; i = i + delta) {
         Column column = (Column) i;
@@ -164,7 +162,7 @@ bool ChessRuleService::noJumpOverPiecesHorizontally(Row row, Column startColumn,
     return true;
 }
 
-bool ChessRuleService::isValidKnightMove(const Move &move, const Board &board) {
+bool ChessRuleService::isValidKnightMove(const Move &move, const Board &board) const {
     int columnDiff = utils::abs(move.startColumn - move.endColumn);
     int rowDiff = utils::abs(move.startRow - move.endRow);
 
@@ -181,7 +179,7 @@ bool ChessRuleService::isValidKnightMove(const Move &move, const Board &board) {
     return false;
 }
 
-bool ChessRuleService::isValidBishopMove(const Move &move, const Board &board) {
+bool ChessRuleService::isValidBishopMove(const Move &move, const Board &board) const {
     if (move.isDiagonal() && noJumpOverPiecesDiagonally(move, board) &&
         (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board))) {
         return true;
@@ -189,7 +187,7 @@ bool ChessRuleService::isValidBishopMove(const Move &move, const Board &board) {
     return false;
 }
 
-bool ChessRuleService::noJumpOverPiecesDiagonally(const Move &move, const Board &board) {
+bool ChessRuleService::noJumpOverPiecesDiagonally(const Move &move, const Board &board) const {
 
     Column column = move.startColumn;
     Row row = move.startRow;
@@ -208,7 +206,7 @@ bool ChessRuleService::noJumpOverPiecesDiagonally(const Move &move, const Board 
     return true;
 }
 
-bool ChessRuleService::isValidKingMove(const Move &move, const Board &board) {
+bool ChessRuleService::isValidKingMove(const Move &move, const Board &board) const {
     int columnDiff = move.startColumn - move.endColumn;
     int rowDiff = move.startRow - move.endRow;
 
@@ -216,11 +214,11 @@ bool ChessRuleService::isValidKingMove(const Move &move, const Board &board) {
            (destinationPositionIsEmpty(move, board) || hasPieceOfDifferentColor(move, board));
 }
 
-bool ChessRuleService::destinationPositionIsEmpty(const Move &move, const Board &board) {
+bool ChessRuleService::destinationPositionIsEmpty(const Move &move, const Board &board) const {
     return !board.hasPieceAt(move.endColumn, move.endRow);
 }
 
-bool ChessRuleService::hasPieceOfDifferentColor(const Move &move, const Board &board) {
+bool ChessRuleService::hasPieceOfDifferentColor(const Move &move, const Board &board) const {
     const Position &startPosition = board.get(move.startColumn, move.startRow);
     const Position &endPosition = board.get(move.endColumn, move.endRow);
     if (startPosition.hasValue
@@ -231,40 +229,39 @@ bool ChessRuleService::hasPieceOfDifferentColor(const Move &move, const Board &b
     return true;
 }
 
-Optional<Square> ChessRuleService::findKing(const Board &board, PieceColor color) {
-    for (int i = Row::_1; i <= Row::_8; i++) {
-        for (int j = Column::A; j <= Column::H; j++) {
-            auto row = (Row) i;
-            auto column = (Column) j;
-            const Position &pieceOptional = board.get(column, row);
-            if (pieceOptional.hasValue && pieceOptional.value == Piece{color, KING}) {
-                return Optional<Square>{{column, row}};
-            }
+Optional<Square> ChessRuleService::findKing(const Board &board, PieceColor color) const {
+
+    RectangleBoardRange rectangleBoardRange;
+    while (rectangleBoardRange.hasNext()) {
+        const Square &square = rectangleBoardRange.next();
+
+        const Position &pieceOptional = board.get(square);
+        if (pieceOptional.hasValue && pieceOptional.value == Piece{color, KING}) {
+            return Optional<Square>{square};
         }
+
     }
     return Optional<Square>{};
 }
 
-bool ChessRuleService::isMate(const Board &board, PieceColor kingColor) {
+bool ChessRuleService::isMate(const Board &board, PieceColor kingColor) const {
     Optional<Square> king = findKing(board, kingColor);
 
-    const Square &square = king();
-    Column startColumn = findStartColumnForKingMoveCheck(square);
-    Column endColumn = findEndColumnForKingMove(square);
-    Row startRow = findStartRowForKingMoveCheck(square);
-    Row endRow = findEndRowForKingMoveCheck(square);
+    const Square &kingSquare = king();
+    Column startColumn = findStartColumnForKingMoveCheck(kingSquare);
+    Column endColumn = findEndColumnForKingMove(kingSquare);
+    Row startRow = findStartRowForKingMoveCheck(kingSquare);
+    Row endRow = findEndRowForKingMoveCheck(kingSquare);
 
-    for (int i = startRow; i <= endRow; i++) {
-        for (int j = startColumn; j <= endColumn; j++) {
-            auto row = (Row) i;
-            auto column = (Column) j;
+    RectangleBoardRange rectangleBoardRange{{startColumn, startRow},
+                                            {endColumn,   endRow}};
 
-            if (isValidMove({square.column, square.row, column, row}, board)) {
-                return false;
-            }
+    while (rectangleBoardRange.hasNext()) {
+        const Square &square = rectangleBoardRange.next();
+        if (isValidMove({kingSquare.column, kingSquare.row, square.column, square.row}, board)) {
+            return false;
         }
     }
-
     return true;
 }
 
@@ -303,3 +300,34 @@ Column ChessRuleService::findStartColumnForKingMoveCheck(const Square &square) c
         return (Column) (square.column - 1);
     }
 }
+
+bool ChessRuleService::isStaleMate(const Board &board, PieceColor targetColor) const {
+    if (isCheck(board, targetColor)) {
+        return false;
+    }
+
+    RectangleBoardRange rectangleBoardRange;
+
+    while (rectangleBoardRange.hasNext()) {
+        const Square &square = rectangleBoardRange.next();
+        Position position = board.get(square);
+        if (position.hasValue
+            && position().pieceColor == targetColor
+            && canMove(board, position(), square)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool ChessRuleService::canMove(const Board &board, const Piece &piece, const Square &square) const {
+    CircularBoardRange circularBoardRange{square};
+    while (circularBoardRange.hasNext()) {
+        if (isValidMove(Move{square, circularBoardRange.next()}, board)) {
+            return true;
+        }
+    }
+    return false;
+}
+

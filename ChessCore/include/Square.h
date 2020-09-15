@@ -9,12 +9,26 @@
 #include <Row.h>
 
 struct Square {
-    const Column column;
-    const Row row;
+    Column column;
+    Row row;
 
-    Square(const Column column, const Row row) : column(column), row(row) {}
+    Square(Column column, Row row);
 
-    Square() : column{A}, row{_1} {}
+    Square();
+
+    bool operator==(const Square &rhs) const;
+
+    bool operator!=(const Square &rhs) const;
+
+    bool operator<(const Square &rhs) const;
+
+    bool operator>(const Square &rhs) const;
+
+    bool operator<=(const Square &rhs) const;
+
+    bool operator>=(const Square &rhs) const;
+
+
 };
 
 #endif //ANYWHERECHESS_SQUARE_H

@@ -11,7 +11,10 @@ add_library(ChessCore
         src/Move.cpp
         src/ChessRuleService.cpp
         src/MoveResult.cpp
-        src/utils.cpp)
+        src/utils.cpp
+        src/Square.cpp
+        src/RectangleBoardRange.cpp
+        src/CircularBoardRange.cpp)
 target_include_directories(ChessCore PUBLIC include)
 
 add_executable(ChessCore_tests

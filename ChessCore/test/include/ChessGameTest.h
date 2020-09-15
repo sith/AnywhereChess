@@ -10,7 +10,6 @@ std::string playerA = "playerA";
 std::string playerB = "playerB";
 
 BOOST_AUTO_TEST_CASE(proper_move_switches_player) {
-    std::stringstream stringstream;
 
     ChessGame<std::string> chessGame{playerA, playerB};
 
@@ -24,7 +23,6 @@ BOOST_AUTO_TEST_CASE(proper_move_switches_player) {
 }
 
 BOOST_AUTO_TEST_CASE(inproper_move_does_not_switch_player) {
-    std::stringstream stringstream;
 
     ChessGame<std::string> chessGame{playerA, playerB};
 
@@ -33,6 +31,12 @@ BOOST_AUTO_TEST_CASE(inproper_move_does_not_switch_player) {
     BOOST_CHECK_EQUAL(resultOfPlayerAMove.status, MoveStatus::ILLEGAL);
 }
 
+BOOST_AUTO_TEST_CASE(invalid_move_no_piece) {
+    ChessGame<std::string> chessGame{playerA, playerB};
+
+    MoveResult resultOfPlayerAMove = chessGame.move(Move{E, _4, E, _5});
+    BOOST_CHECK_EQUAL(resultOfPlayerAMove.status, MoveStatus::ILLEGAL);
+}
 
 BOOST_AUTO_TEST_CASE(return_taken_piece) {
     Board board;
@@ -102,9 +106,29 @@ BOOST_AUTO_TEST_CASE(check_and_mate) {
     BOOST_CHECK_EQUAL(result.status, MoveStatus::CHECK_MATE);
     BOOST_CHECK_EQUAL(playerA, chessGame.getCurrentPlayer());
 
-    BOOST_CHECK_EQUAL(chessGame.move({H, _1, H, _2}).status,MoveStatus::NO_MOVE_GAME_OVER);
+    BOOST_CHECK_EQUAL(chessGame.move({H, _1, H, _2}).status, MoveStatus::NO_MOVE_GAME_OVER);
 }
 
+BOOST_AUTO_TEST_CASE(stale_mate) {
+    Board board;
+
+    const Piece &whiteRook1 = Piece{PieceColor::WHITE, PieceType::ROOK};
+    board.set(H, _2, whiteRook1);
+    const Piece &whiteRook2 = Piece{PieceColor::WHITE, PieceType::ROOK};
+    board.set(H, _3, whiteRook2);
+
+    const Piece &blackKing = Piece{PieceColor::BLACK, PieceType::KING};
+    board.set(A, _1, blackKing);
+
+    ChessGame<std::string> chessGame{playerA, playerB, board};
+
+    const MoveResult &result = chessGame.move(Move{H, _3, B, _3});
+
+    BOOST_CHECK_EQUAL(result.status, MoveStatus::STALE_MATE);
+    BOOST_CHECK_EQUAL(playerA, chessGame.getCurrentPlayer());
+
+    BOOST_CHECK_EQUAL(chessGame.move({B, _3, H, _3}).status, MoveStatus::NO_MOVE_GAME_OVER);
+}
 
 BOOST_AUTO_TEST_CASE(wrong_piece) {
     Board board;

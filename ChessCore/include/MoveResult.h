@@ -9,7 +9,7 @@
 
 enum class
 MoveStatus {
-    OK, ILLEGAL, CHECK, CHECK_MATE, NO_MOVE_GAME_OVER
+    OK, ILLEGAL, CHECK, CHECK_MATE, NO_MOVE_GAME_OVER, STALE_MATE
 };
 
 struct MoveResult {

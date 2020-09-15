@@ -163,3 +163,8 @@ std::ostream &operator<<(std::ostream &os, const Optional<Piece> &pieceOptional)
     os << "]";
     return os;
 }
+
+std::ostream &operator<<(std::ostream &os, const Square square) {
+    os << square.column << square.row;
+    return os;
+}

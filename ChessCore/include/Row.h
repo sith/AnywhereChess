@@ -16,5 +16,26 @@ enum Row {
     _8,
 };
 
+inline Row operator+(Row row, int value) {
+    int result = (int) row + value;
+    if (result > 7) {
+        return _8;
+    }
+
+    return (Row) result;
+}
+
+inline Row operator-(Row row, int value) {
+    int result = (int) row - value;
+    if (result < 0) {
+        return _1;
+    }
+    return (Row) result;
+}
+
+inline int operator-(Row lhs, Row rhs) {
+    return (int) lhs - (int) rhs;
+}
+
 
 #endif //ANYWHERECHESS_ROW_H

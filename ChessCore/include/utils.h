@@ -13,6 +13,23 @@ namespace utils {
         return number;
     }
 
+    template<typename TYPE>
+    inline TYPE min(TYPE a, TYPE b) {
+        if (a <= b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
+    template<typename TYPE>
+    inline TYPE max(TYPE a, TYPE b) {
+        if (a >= b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
 
 }
 #endif //ANYWHERECHESS_UTILS_H

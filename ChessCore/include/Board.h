@@ -9,6 +9,7 @@ constexpr int arraySize = boardSize * boardSize;
 #include "Move.h"
 #include "Row.h"
 #include "Column.h"
+#include "Square.h"
 #include <Types.h>
 
 class Board {
@@ -23,6 +24,8 @@ class Board {
 public:
 
     [[nodiscard]] Position get(Column column, Row row) const;
+
+    [[nodiscard]] Position get(Square square) const;
 
     void set(Column column, Row row, Piece piece);
 

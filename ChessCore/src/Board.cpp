@@ -8,7 +8,7 @@ Position Board::get(Column column, Row row) const {
     if (piece != nullptr) {
         return Position(*piece);
     } else {
-        return Position ();
+        return Position();
     }
 }
 
@@ -111,6 +111,10 @@ bool Board::operator==(const Board &rhs) const {
 
 bool Board::operator!=(const Board &rhs) const {
     return !(rhs == *this);
+}
+
+Position Board::get(Square square) const {
+    return get(square.column, square.row);
 }
 
 Board createStandardBoard() {

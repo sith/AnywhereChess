@@ -7,6 +7,7 @@
 
 #include "Row.h"
 #include "Column.h"
+#include "Square.h"
 
 struct Move {
     Column startColumn;
@@ -16,7 +17,9 @@ struct Move {
 
     Move();
 
-    Move(const Column startColumn, const Row startRow, const Column endColumn, const Row endRow);
+    Move(Column startColumn, Row startRow, Column endColumn, Row endRow);
+
+    Move(Square startSquare, Square endSquare);
 
     bool operator==(const Move &rhs) const;
 
