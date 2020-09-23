@@ -106,6 +106,18 @@ BOOST_AUTO_TEST_CASE(give_up_move) {
 }
 
 
+BOOST_AUTO_TEST_CASE(draw) {
+    std::stringstream isstream;
+    isstream << drawString << '\n';
+
+    CmdMove cmdMove;
+    isstream >> cmdMove;
+    BOOST_CHECK(cmdMove.validFormat);
+    BOOST_CHECK(!cmdMove.giveUp);
+    BOOST_CHECK(cmdMove.draw);
+}
+
+
 void assertInvalidMove(std::string move) {
     std::stringstream isstream;
     isstream << move;
@@ -118,7 +130,19 @@ BOOST_AUTO_TEST_CASE(all_invalid_moves) {
     assertInvalidMove("_1a1\n");
     assertInvalidMove("a_a1\n");
     assertInvalidMove("a1_1\n");
-    assertInvalidMove("a1a_\n");
+    assertInvalidMove("a\n");
+}
+BOOST_AUTO_TEST_CASE(override_all_values) {
+    std::stringstream isstream;
+    isstream << giveUpString;
+    CmdMove cmdMove;
+    isstream >> cmdMove;
+
+    isstream.clear();
+    isstream << drawString;
+    isstream >> cmdMove;
+    BOOST_CHECK(!cmdMove.giveUp);
+    BOOST_CHECK(cmdMove.draw);
 }
 
 

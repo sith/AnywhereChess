@@ -62,6 +62,21 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
             return;
         }
 
+        if (cmdMove.draw) {
+            ostream << "Player " << game.getCurrentPlayer()
+                    << " suggests draw. Type 'draw' to accept, or press Enter\n";
+            CmdMove acceptDraw;
+            istream >> acceptDraw;
+            if (acceptDraw.validFormat && acceptDraw.draw) {
+                ostream << "Draw!";
+
+                return;
+            } else {
+                ostream << game.getCurrentPlayer() << ">";
+                continue;
+            }
+        }
+
         const MoveResult &moveResult = game.move(cmdMove.move);
 
         switch (moveResult.status) {

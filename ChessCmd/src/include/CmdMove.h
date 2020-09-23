@@ -9,5 +9,6 @@ struct CmdMove {
     Move move;
     bool validFormat{false};
     bool giveUp{false};
+    bool draw{false};
 };
 #endif //ANYWHERECHESS_CMDMOVE_H

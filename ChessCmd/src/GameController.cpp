@@ -8,12 +8,28 @@ inline void setPiece(CmdPieceType &cmdPieceType, PieceType type);
 
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove) {
 
+    cmdMove.draw = false;
+    cmdMove.giveUp = false;
+    cmdMove.validFormat = false;
+    cmdMove.move = {A, _1, A, _1};
+
     std::string line;
     std::getline(is, line);
 
     if (line == giveUpString) {
         cmdMove.giveUp = true;
         cmdMove.validFormat = true;
+        return is;
+    }
+
+    if (line == drawString) {
+        cmdMove.draw = true;
+        cmdMove.validFormat = true;
+        return is;
+    }
+
+    if (line.length() != 4) {
+        cmdMove.validFormat = false;
         return is;
     }
 

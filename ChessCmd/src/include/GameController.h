@@ -8,6 +8,7 @@
 #include "CmdPieceType.h"
 
 static const std::string giveUpString{"give up"};
+static const std::string drawString{"draw"};
 
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove);
 
