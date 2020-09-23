@@ -29,7 +29,11 @@ public:
 
     void set(Column column, Row row, Piece piece);
 
+    void set(Square square, Piece piece);
+
     void remove(Column column, Row row);
+
+    void remove(Square square);
 
     Board();
 

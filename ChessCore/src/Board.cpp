@@ -13,7 +13,13 @@ Position Board::get(Column column, Row row) const {
 }
 
 void Board::set(Column column, Row row, Piece piece) {
-    array[toIndex(column, row)] = new Piece{piece};
+    int index = toIndex(column, row);
+    delete array[index];
+    array[index] = new Piece{piece};
+}
+
+void Board::set(Square square, Piece piece) {
+    set(square.column, square.row, piece);
 }
 
 Board::Board() {
@@ -87,6 +93,10 @@ Board &Board::operator=(const Board &other) {
 void Board::remove(Column column, Row row) {
     delete array[toIndex(column, row)];
     array[toIndex(column, row)] = nullptr;
+}
+
+void Board::remove(Square square) {
+    remove(square.column, square.row);
 }
 
 bool Board::operator==(const Board &rhs) const {

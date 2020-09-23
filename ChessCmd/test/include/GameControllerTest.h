@@ -33,34 +33,6 @@ BOOST_AUTO_TEST_CASE(displays_provided_board_with_next_user) {
     );
 }
 
-
-BOOST_AUTO_TEST_CASE(displays_error_message_in_case_of_illigal_move) {
-    std::stringstream stringstream;
-
-    std::string playerA = "playerA";
-    std::string playerB = "playerB";
-
-    ChessGame<std::string> chessGame{playerA, playerB};
-
-    chessGame.move(Move{E, _2, C, _5});
-
-    stringstream << chessGame;
-    BOOST_CHECK_EQUAL(stringstream.str(),
-                      " abcdefgh \n"
-                      "8rnbqkbnr8\n"
-                      "7pppppppp7\n"
-                      "6........6\n"
-                      "5........5\n"
-                      "4........4\n"
-                      "3........3\n"
-                      "2PPPPPPPP2\n"
-                      "1RNBQKBNR1\n"
-                      " abcdefgh \n"
-                      "error>Illegal move\n"
-                      "playerA>"
-    );
-}
-
 /*
 
 BOOST_AUTO_TEST_CASE(reads_move_) {
@@ -148,5 +120,33 @@ BOOST_AUTO_TEST_CASE(all_invalid_moves) {
     assertInvalidMove("a1_1\n");
     assertInvalidMove("a1a_\n");
 }
+
+
+void validPieceType(const char *input, PieceType expectedPieceType) {
+    std::stringstream isstream;
+    isstream << input << "\n";
+    CmdPieceType cmdPieceType;
+    isstream >> cmdPieceType;
+    BOOST_CHECK(cmdPieceType.validFormat);
+    BOOST_CHECK_EQUAL(cmdPieceType.pieceType, expectedPieceType);
+}
+
+BOOST_AUTO_TEST_CASE(read_piece_type) {
+    validPieceType("pond", POND);
+    validPieceType("bishop", BISHOP);
+    validPieceType("rook", ROOK);
+    validPieceType("knight", KNIGHT);
+    validPieceType("king", KING);
+    validPieceType("queen", QUEEN);
+}
+
+BOOST_AUTO_TEST_CASE(invalid_piece_type) {
+    std::stringstream isstream;
+    isstream << "HelloWorld" << "\n";
+    CmdPieceType cmdPieceType;
+    isstream >> cmdPieceType;
+    BOOST_CHECK(!cmdPieceType.validFormat);
+}
+
 
 #endif //ANYWHERECHESS_GAMECONTROLLERTEST_H

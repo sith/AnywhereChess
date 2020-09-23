@@ -5,11 +5,13 @@
 
 #include <PieceToCharMapper.h>
 #include <CmdMove.h>
+#include "CmdPieceType.h"
 
 static const std::string giveUpString{"give up"};
 
-
 std::istream &operator>>(std::istream &is, CmdMove &cmdMove);
+
+std::istream &operator>>(std::istream &is, CmdPieceType &cmdPieceType);
 
 inline bool invalidColumn(const char &startColumnCharacter);
 

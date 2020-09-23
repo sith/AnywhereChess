@@ -65,26 +65,53 @@ void ChessCmd::playGame(ChessGame<std::string> &game) {
         const MoveResult &moveResult = game.move(cmdMove.move);
 
         switch (moveResult.status) {
-            case MoveStatus::OK:
+            case MoveStatus::OK: {
                 if (moveResult.takenPiece.hasValue) {
                     ostream << "Piece taken: " << moveResult.takenPiece.value << '\n';
                 }
+
                 ostream << game;
+
+                const ChessGameState &state = game.getState();
+
+                if (state == ChessGameState::PROMOTION) {
+                    PromotionResult result = PromotionResult::FAILED;
+                    do {
+                        ostream << '\n' << "Promote(rook,knight,bishop,queen)>";
+                        CmdPieceType cmdPieceType;
+                        istream >> cmdPieceType;
+                        if (!cmdPieceType.validFormat) {
+                            ostream << "Invalid piece!\n";
+                            continue;
+                        }
+                        result = game.promote(cmdPieceType.pieceType);
+                        if (result == PromotionResult::FAILED) {
+                            ostream << "Only rook, knight, bishop or queen are available for promotion!\n";
+                        }
+                    } while (result == PromotionResult::FAILED);
+
+                } else {
+                    switch (state) {
+                        case ChessGameState::CHECK:
+                            ostream << "Check! " << game.getCurrentPlayer() << "\n" << game;
+                            break;
+                        case ChessGameState::CHECK_AND_MATE:
+                            ostream << "Check and Mate!\n";
+                            ostream << "Winner: " << game.getCurrentPlayer() << "\n";
+                            return;
+                        case ChessGameState::STALE_MATE:
+                            ostream << "Stale Mate!\n";
+                            return;
+                        default:
+                            break;
+                    }
+                }
                 break;
+            }
             case MoveStatus::ILLEGAL:
                 printInvalidMessage(game, "Invalid move!");
                 break;
-            case MoveStatus::CHECK:
-                ostream << "Check! " << game.getCurrentPlayer() << "\n" << game;
-                break;
-            case MoveStatus::CHECK_MATE:
-                ostream << "Check and Mate!\n";
-                ostream << "Winner: " << game.getCurrentPlayer() << "\n";
-                return;
             case MoveStatus::NO_MOVE_GAME_OVER:
-                return;
-            case MoveStatus::STALE_MATE:
-                ostream << "Stale Mate!\n";
                 return;
         }
     }

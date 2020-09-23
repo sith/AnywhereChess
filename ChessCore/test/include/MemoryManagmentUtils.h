@@ -4,16 +4,16 @@
 #include <cstdio>
 #include <cstdlib>
 
-int countOfAllocatedObjectsInFreeSpace = 0;
+int countOfObjectsInFreeSpace = 0;
 
 void operator delete(void *p) noexcept {
     std::free(p);
-    countOfAllocatedObjectsInFreeSpace--;
+    countOfObjectsInFreeSpace--;
 }
 
 void *operator new(size_t size) {
     void *p = malloc(size);
-    countOfAllocatedObjectsInFreeSpace++;
+    countOfObjectsInFreeSpace++;
     return p;
 }
 

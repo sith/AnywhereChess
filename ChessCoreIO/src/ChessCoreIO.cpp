@@ -13,14 +13,14 @@ constexpr std::initializer_list<Row> rows = {_1, _2, _3, _4, _5, _6, _7, _8};
 
 std::ostream &operator<<(std::ostream &os, const Board &board) {
     os << " abcdefgh \n";
+
     for (auto row = std::rbegin(rows); row != std::rend(rows); ++row) {
-        char rowNumber = (char) (*row + '1');
-        os << rowNumber;
-        for (auto column = std::begin(columns); column != std::end(columns); ++column) {
-            const Position &pieceOptional = board.get(*column, *row);
+        os << *row;
+        for (const auto &column : columns) {
+            const Position &pieceOptional = board.get(column, *row);
             os << mapPositionToChar(pieceOptional);
         }
-        os << rowNumber << '\n';
+        os << *row << '\n';
     }
     os << " abcdefgh \n";
     return os;
@@ -45,6 +45,9 @@ std::ostream &operator<<(std::ostream &os, const MoveStatus &moveStatus) {
             break;
         case MoveStatus::ILLEGAL:
             os << "ILLEGAL";
+            break;
+        case MoveStatus::NO_MOVE_GAME_OVER:
+            os << "NO_MOVE_GAME_OVER";
             break;
         default:
             os << "Not supported enum. Please debug to see value";
@@ -166,5 +169,38 @@ std::ostream &operator<<(std::ostream &os, const Optional<Piece> &pieceOptional)
 
 std::ostream &operator<<(std::ostream &os, const Square square) {
     os << square.column << square.row;
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, PromotionResult promotionResult) {
+    switch (promotionResult) {
+        case PromotionResult::SUCCESSFUL:
+            os << "SUCCESSFUL";
+            break;
+        case PromotionResult::FAILED:
+            os << "FAILED";
+            break;
+    }
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, ChessGameState chessGameState) {
+    switch (chessGameState) {
+        case ChessGameState::IN_PROGRESS:
+            os << "IN_PROGRESS";
+            break;
+        case ChessGameState::PROMOTION:
+            os << "PROMOTION";
+            break;
+        case ChessGameState::CHECK:
+            os << "CHECK";
+            break;
+        case ChessGameState::CHECK_AND_MATE:
+            os << "CHECK_AND_MATE";
+            break;
+        case ChessGameState::STALE_MATE:
+            os << "STALE_MATE";
+            break;
+    }
     return os;
 }

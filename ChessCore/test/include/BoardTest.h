@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(copy_board_instance) {
 
 BOOST_AUTO_TEST_CASE(copy_assignment_board_instance) {
     {
-        countOfAllocatedObjectsInFreeSpace = 0;
+        countOfObjectsInFreeSpace = 0;
         Board boardA = createStandardBoard();
         Board boardB = createStandardBoard();
         boardA = boardB;
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(copy_assignment_board_instance) {
         assertCopiedPieces(boardA, boardB);
     }
 
-    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
+    BOOST_CHECK_EQUAL(countOfObjectsInFreeSpace, 0);
 }
 
 BOOST_AUTO_TEST_CASE(no_self_copy_assignment_of_the_board) {
@@ -73,8 +73,38 @@ BOOST_AUTO_TEST_CASE(move_piece) {
     BOOST_CHECK(!takenPiece.hasValue);
 }
 
+BOOST_AUTO_TEST_CASE(set_piece) {
+    Board board;
+    const Piece &whiteKnight = Piece{PieceColor::WHITE, PieceType::KNIGHT};
+    board.set(Column::A, Row::_1, whiteKnight);
+
+    positionHas(board, Column::A, Row::_1, whiteKnight);
+
+    const Piece &whitePond = Piece{PieceColor::WHITE, PieceType::POND};
+    board.set(Square{Column::H, Row::_8}, whitePond);
+    positionHas(board, Column::H, Row::_8, whitePond);
+}
+
+
+BOOST_AUTO_TEST_CASE(replace_piece) {
+    Board board;
+    countOfObjectsInFreeSpace = 0;
+    {
+        const Piece &whitePond = Piece{PieceColor::WHITE, PieceType::POND};
+        board.set(Square{Column::H, Row::_8}, whitePond);
+        positionHas(board, Column::H, Row::_8, whitePond);
+
+        const Piece &blackPond = Piece{PieceColor::BLACK, PieceType::POND};
+        board.set(Square{Column::H, Row::_8}, blackPond);
+        positionHas(board, Column::H, Row::_8, blackPond);
+    }
+
+    BOOST_CHECK_EQUAL(countOfObjectsInFreeSpace, 1);
+}
+
+
 BOOST_AUTO_TEST_CASE(take_piece) {
-    countOfAllocatedObjectsInFreeSpace = 0;
+    countOfObjectsInFreeSpace = 0;
     {
         Board board;
         const Piece &whiteRook = Piece{PieceColor::WHITE, PieceType::ROOK};
@@ -90,7 +120,7 @@ BOOST_AUTO_TEST_CASE(take_piece) {
         BOOST_CHECK(takenPiece.hasValue);
         BOOST_CHECK_EQUAL(takenPiece.value, blackPond);
     }
-    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
+    BOOST_CHECK_EQUAL(countOfObjectsInFreeSpace, 0);
 }
 
 BOOST_AUTO_TEST_CASE(has_piece) {
@@ -102,13 +132,24 @@ BOOST_AUTO_TEST_CASE(has_piece) {
 
 BOOST_AUTO_TEST_CASE(remove_piece_from_position) {
     Board board;
-    countOfAllocatedObjectsInFreeSpace = 0;
+    countOfObjectsInFreeSpace = 0;
     {
         board.set(A, _1, {WHITE, POND});
         board.remove(A, _1);
         BOOST_CHECK(!board.hasPieceAt(A, _1));
     }
-    BOOST_CHECK_EQUAL(countOfAllocatedObjectsInFreeSpace, 0);
+    BOOST_CHECK_EQUAL(countOfObjectsInFreeSpace, 0);
+}
+
+BOOST_AUTO_TEST_CASE(remove_piece_from_square) {
+    Board board;
+    countOfObjectsInFreeSpace = 0;
+    {
+        board.set(A, _1, {WHITE, POND});
+        board.remove({A, _1});
+        BOOST_CHECK(!board.hasPieceAt(A, _1));
+    }
+    BOOST_CHECK_EQUAL(countOfObjectsInFreeSpace, 0);
 }
 
 BOOST_AUTO_TEST_CASE(boards_are_equal) {
