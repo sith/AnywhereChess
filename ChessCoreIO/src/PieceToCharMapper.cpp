@@ -2,11 +2,11 @@
 #include <Types.h>
 #include "PieceToCharMapper.h"
 
-char mapWhitePiece(const Piece &piece);
+std::string mapWhitePiece(const Piece &piece);
 
-char mapBlackPiece(const Piece &piece);
+std::string mapBlackPiece(const Piece &piece);
 
-char mapPieceToChar(const Piece &piece) {
+std::string mapPieceToChar(const Piece &piece) {
     switch (piece.pieceColor) {
         case PieceColor::WHITE:
             return mapWhitePiece(piece);
@@ -15,44 +15,44 @@ char mapPieceToChar(const Piece &piece) {
     }
 }
 
-char mapBlackPiece(const Piece &piece) {
+std::string mapBlackPiece(const Piece &piece) {
     switch (piece.pieceType) {
         case PieceType::POND:
-            return 'p';
+            return "\u265F";
         case PieceType::ROOK:
-            return 'r';
+            return "\u265C";
         case PieceType::KNIGHT:
-            return 'n';
+            return "\u265E";
         case PieceType::BISHOP:
-            return 'b';
+            return "\u265D";
         case PieceType::QUEEN:
-            return 'q';
+            return "\u265B";
         case PieceType::KING:
-            return 'k';
+            return "\u265A";
     }
 }
 
-char mapWhitePiece(const Piece &piece) {
+std::string mapWhitePiece(const Piece &piece) {
     switch (piece.pieceType) {
         case PieceType::POND:
-            return 'P';
+            return "\u2659";
         case PieceType::ROOK:
-            return 'R';
+            return "\u2656";
         case PieceType::KNIGHT:
-            return 'N';
+            return "\u2658";
         case PieceType::BISHOP:
-            return 'B';
+            return "\u2657";
         case PieceType::QUEEN:
-            return 'Q';
+            return "\u2655";
         case PieceType::KING:
-            return 'K';
+            return "\u2654";
     }
 }
 
-char mapPositionToChar(const Position &pieceOptional) {
+std::string mapPositionToChar(const Position &pieceOptional) {
     if (pieceOptional.hasValue) {
         return mapPieceToChar(pieceOptional.value);
     } else {
-        return '.';
+        return ".";
     }
 }

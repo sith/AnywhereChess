@@ -20,14 +20,14 @@ BOOST_AUTO_TEST_CASE(displays_provided_board_with_next_user) {
     stringstream << chessGame;
     BOOST_CHECK_EQUAL(stringstream.str(),
                       " abcdefgh \n"
-                      "8rnbqkbnr8\n"
-                      "7pppppppp7\n"
+                      "8\u265C\u265E\u265D\u265B\u265A\u265D\u265E\u265C8\n"
+                      "7\u265F\u265F\u265F\u265F\u265F\u265F\u265F\u265F7\n"
                       "6........6\n"
                       "5........5\n"
                       "4........4\n"
                       "3........3\n"
-                      "2PPPPPPPP2\n"
-                      "1RNBQKBNR1\n"
+                      "2\u2659\u2659\u2659\u2659\u2659\u2659\u2659\u26592\n"
+                      "1\u2656\u2658\u2657\u2655\u2654\u2657\u2658\u26561\n"
                       " abcdefgh \n"
                       "playerA>"
     );

@@ -11,8 +11,8 @@
 #include <Column.h>
 #include <Row.h>
 
-char mapPositionToChar(const Position &pieceOptional);
+std::string mapPositionToChar(const Position &pieceOptional);
 
-char mapPieceToChar(const Piece &piece);
+std::string mapPieceToChar(const Piece &piece);
 
 #endif //ANYWHERECHESS_PIECETOCHARMAPPER_H
